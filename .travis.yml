@@ -1,5 +1,5 @@
 before_install:
-  - sudo apt-get install -y gobject-introspection
+  - sudo apt-get install -y gobject-introspection libgirepository1.0-dev
 language: python
 python:
   - "2.7"
