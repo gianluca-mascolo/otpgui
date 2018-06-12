@@ -1,0 +1,7 @@
+gmail: 
+ name: "gmail foo.bar@gmail.com"
+ genstring: "ABCDEFGHIJKLMNOP"
+twitter: 
+ name: "twitter: amazingaccountname"
+ genstring: "PONMLKJIHGFEDCBA"
+ 
