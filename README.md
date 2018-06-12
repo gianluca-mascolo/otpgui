@@ -17,3 +17,6 @@ The configuration file is a simple yaml (see example) with this information:
 - select the label for the otp you want to generate
 - if you stay with mouse over the otpcode you will see the extended secret name
 - if you click the otp code it will be copied to clipboard
+
+### Screenshot
+
