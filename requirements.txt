@@ -1,4 +1,4 @@
 pycairo
-PyGObject
+PyGObject==3.27.0
 pyotp
 PyYAML
