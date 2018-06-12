@@ -3,7 +3,7 @@ An OTP generator compatible with totp. Written in python and gtk.
 
 ### How to install it:
 - Install the necessary python requirements (use pip or your favorite distro package manager)
-- Write a file `.otp.yml` in your home directory containing yout secrets.
+- Write a file `.otp.yml` in your home directory containing your secrets.
 - launch otpgui.py
 
 ### Configuration file
