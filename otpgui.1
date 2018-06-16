@@ -1,0 +1,53 @@
+.TH OTPGUI "1" "June 2018" "otpgui 0.1" "User Commands"
+.SH NAME
+otpgui \- one-time password tool
+.SH SYNOPSIS
+.B otpgui
+.SH DESCRIPTION
+otpgui 0.1
+.PP
+Generate OATH one-time password. You must write a YAML configuration file in your
+home directory named .otp.yml and just execute otpguy without any arguments.
+The configuration file is composed by:
+.PP
+.RS 1
+* a field that represent a label for the otp secret, that is used as a voice in the menu
+.RE
+.RS 1
+* two subfields for the secret you labeled:
+.RE
+.RS 2
+\- name: a longer name for your secret that contains additional infos about it
+.RE
+.RS 2
+\- genstring: the string represented by QR-code you obtained from the website or account belonging to this secret
+.RE
+.SH EXAMPLES
+Example ~/.otp.yml configuration
+.PP
+.RS 1
+gmail:
+.RS 2 
+name: "gmail foo.bar@gmail.com"
+.RE
+.RS 2
+genstring: "ABCDEFGHIJKLMNOP"
+.RE
+twitter:
+.RS 2 
+name: "twitter: amazingaccountname"
+.RE
+.RS 2
+genstring: "PONMLKJIHGFEDCBA"
+.RE
+.RE
+.SH AUTHOR
+Written by Gianluca Mascolo.
+.SH REPORTING BUGS
+Report bugs to: <https://github.com/gianluca\-mascolo/otpgui>
+.SH COPYRIGHT
+Copyright \(co 2018 Gianluca Mascolo.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+.br
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
