@@ -21,3 +21,4 @@ The configuration file is a simple yaml (see example) with this information:
 ### Screenshot
 
 ![otpgui](https://user-images.githubusercontent.com/20320073/41290428-1fe3d8ba-6e4d-11e8-83c9-530ca252910e.png)
+
