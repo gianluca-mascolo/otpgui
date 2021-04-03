@@ -6,6 +6,14 @@ An OTP generator compatible with totp. Written in python and gtk.
 - Write a file `.otp.yml` in your home directory containing your secrets.
 - launch otpgui.py
 
+### Package required (Ubuntu 20.04)
+```
+sudo apt install virtualenv libcairo2-dev python2-dev python-gobject-2-dev python-gi-dev libgirepository1.0-dev
+virtualenv --python=python2 virtualenv
+source  virtualenv/bin/activate
+pip install -r requirements.txt
+```
+
 ### Configuration file
 The configuration file is a simple yaml (see example) with this information:
 - a label (to be shown in the dropdown menu)
