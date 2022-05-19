@@ -20,7 +20,7 @@ import yaml,gi,time,pyotp
 from os.path import expanduser
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
-from gi.repository import Gdk,Gtk,GObject
+from gi.repository import Gdk,Gtk,GObject,GLib
 
 class MyWindow(Gtk.Window):
 
@@ -43,7 +43,7 @@ class MyWindow(Gtk.Window):
         self.ProgressBar = Gtk.ProgressBar(fraction=( ( 30 - time.time() % 30 ) / 30))
         vbox.pack_start(self.ProgressBar, True, True, 0)
 
-        self.timeout_id = GObject.timeout_add(1000, self.on_timeout, None)
+        self.timeout_id = GLib.timeout_add(1000, self.on_timeout)
         self.activity_mode = False
         
         self.OtpLabelStore = Gtk.ListStore(str)
@@ -61,7 +61,7 @@ class MyWindow(Gtk.Window):
         self.OtpCombo.add_attribute(renderer_text, "text", 0)
         vbox.pack_start(self.OtpCombo, False, False, 0)
         
-    def on_timeout(self, user_data):
+    def on_timeout(self):
         global totp
         global config_data
         global SelectedLabel
