@@ -1,4 +1,4 @@
-pycairo==1.18.2
-PyGObject==3.36.0
-pyotp==2.3.0
-PyYAML==5.1.2
+pycairo==1.21.0
+PyGObject==3.42.1
+pyotp==2.6.0
+PyYAML==6.0

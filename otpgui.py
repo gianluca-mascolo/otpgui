@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 """
     otpgui.py is an OTP generator compatible with TOTP.
     Copyright (C) 2018 Gianluca Mascolo <gianluca@gurutech.it>
@@ -20,7 +20,7 @@ import yaml,gi,time,pyotp
 from os.path import expanduser
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
-from gi.repository import Gdk,Gtk,GObject
+from gi.repository import Gdk,Gtk,GObject,GLib
 
 class MyWindow(Gtk.Window):
 
@@ -43,14 +43,14 @@ class MyWindow(Gtk.Window):
         self.ProgressBar = Gtk.ProgressBar(fraction=( ( 30 - time.time() % 30 ) / 30))
         vbox.pack_start(self.ProgressBar, True, True, 0)
 
-        self.timeout_id = GObject.timeout_add(1000, self.on_timeout, None)
+        self.timeout_id = GLib.timeout_add(1000, self.on_timeout)
         self.activity_mode = False
         
         self.OtpLabelStore = Gtk.ListStore(str)
         for key in config_data:
                 self.OtpLabelStore.append([key])
 
-        self.OtpLabelStoreSorted = Gtk.TreeModelSort(self.OtpLabelStore)
+        self.OtpLabelStoreSorted = Gtk.TreeModelSort.new_with_model(self.OtpLabelStore)
         self.OtpLabelStoreSorted.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         self.OtpCombo = Gtk.ComboBox.new_with_model(self.OtpLabelStoreSorted)
@@ -61,7 +61,7 @@ class MyWindow(Gtk.Window):
         self.OtpCombo.add_attribute(renderer_text, "text", 0)
         vbox.pack_start(self.OtpCombo, False, False, 0)
         
-    def on_timeout(self, user_data):
+    def on_timeout(self):
         global totp
         global config_data
         global SelectedLabel
@@ -84,19 +84,17 @@ class MyWindow(Gtk.Window):
     def on_otp_clicked(self,OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
-# MAIN
-
-home = expanduser("~")
-
-try:
- config_data = yaml.safe_load(file(home + '/.otp.yml', 'r'))
-except yaml.YAMLError, exc:
- print "Error in configuration file:", exc
- sys.exit(1)
-
-SelectedLabel = config_data.keys()[0]
-totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
-win = MyWindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+if __name__ == '__main__':
+    home = expanduser("~")
+    try:
+        with open(home + '/.otp.yml', 'r') as file:
+            config_data = yaml.safe_load(file)
+    except yaml.YAMLError as exc:
+        print(f"Error in configuration file: {exc}")
+        sys.exit(1)
+    SelectedLabel = list(config_data.keys())[0]
+    totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
+    win = MyWindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()
