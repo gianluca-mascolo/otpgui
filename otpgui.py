@@ -50,7 +50,7 @@ class MyWindow(Gtk.Window):
         for key in config_data:
                 self.OtpLabelStore.append([key])
 
-        self.OtpLabelStoreSorted = Gtk.TreeModelSort(self.OtpLabelStore)
+        self.OtpLabelStoreSorted = Gtk.TreeModelSort.new_with_model(self.OtpLabelStore)
         self.OtpLabelStoreSorted.set_sort_column_id(0, Gtk.SortType.ASCENDING)
 
         self.OtpCombo = Gtk.ComboBox.new_with_model(self.OtpLabelStoreSorted)
@@ -84,20 +84,17 @@ class MyWindow(Gtk.Window):
     def on_otp_clicked(self,OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
-# MAIN
-
-home = expanduser("~")
-
-try:
-    with open(home + '/.otp.yml', 'r') as file:
-        config_data = yaml.safe_load(file)
-except yaml.YAMLError as exc:
-    print(f"Error in configuration file: {exc}")
-    sys.exit(1)
-
-SelectedLabel = list(config_data.keys())[0]
-totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
-win = MyWindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+if __name__ == '__main__':
+    home = expanduser("~")
+    try:
+        with open(home + '/.otp.yml', 'r') as file:
+            config_data = yaml.safe_load(file)
+    except yaml.YAMLError as exc:
+        print(f"Error in configuration file: {exc}")
+        sys.exit(1)
+    SelectedLabel = list(config_data.keys())[0]
+    totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
+    win = MyWindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()
