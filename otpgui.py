@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 """
     otpgui.py is an OTP generator compatible with TOTP.
     Copyright (C) 2018 Gianluca Mascolo <gianluca@gurutech.it>
@@ -89,12 +89,13 @@ class MyWindow(Gtk.Window):
 home = expanduser("~")
 
 try:
- config_data = yaml.safe_load(file(home + '/.otp.yml', 'r'))
-except yaml.YAMLError, exc:
- print "Error in configuration file:", exc
- sys.exit(1)
+    with open(home + '/.otp.yml', 'r') as file:
+        config_data = yaml.safe_load(file)
+except yaml.YAMLError as exc:
+    print(f"Error in configuration file: {exc}")
+    sys.exit(1)
 
-SelectedLabel = config_data.keys()[0]
+SelectedLabel = list(config_data.keys())[0]
 totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
 win = MyWindow()
 win.connect("destroy", Gtk.main_quit)
