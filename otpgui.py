@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import yaml,gi,time,pyotp
+import yaml,gi,time,pyotp,subprocess
 from os.path import expanduser
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
@@ -93,7 +93,12 @@ if __name__ == '__main__':
         print(f"Error in configuration file: {exc}")
         sys.exit(1)
     SelectedLabel = list(config_data.keys())[0]
-    totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
+    gensel = f"['{SelectedLabel}']['genstring']"
+    sops_cmd = f"sops -d --extract"
+    sops_file = "/home/gianlucamascolo/Documents/otp/otp.yml"
+    print(gensel)
+    genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {sops_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+    totp = pyotp.TOTP(genstring.stdout)
     win = MyWindow()
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
