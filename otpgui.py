@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import yaml,gi,time,pyotp,subprocess
+import yaml,gi,time,pyotp,subprocess,argparse
 from os.path import expanduser
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
@@ -85,9 +85,13 @@ class MyWindow(Gtk.Window):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
 if __name__ == '__main__':
-    home = expanduser("~")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
+    args = parser.parse_args()
+    config_file = args.config_file
+
     try:
-        with open(home + '/.otp.yml', 'r') as file:
+        with open(config_file, 'r') as file:
             config_data = yaml.safe_load(file)
     except yaml.YAMLError as exc:
         print(f"Error in configuration file: {exc}")
@@ -95,9 +99,8 @@ if __name__ == '__main__':
     SelectedLabel = list(config_data.keys())[0]
     gensel = f"['{SelectedLabel}']['genstring']"
     sops_cmd = f"sops -d --extract"
-    sops_file = "/home/gianlucamascolo/Documents/otp/otp.yml"
     print(gensel)
-    genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {sops_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+    genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
     totp = pyotp.TOTP(genstring.stdout)
     win = MyWindow()
     win.connect("destroy", Gtk.main_quit)
