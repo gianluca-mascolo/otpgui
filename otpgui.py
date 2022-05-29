@@ -36,7 +36,7 @@ class MyWindow(Gtk.Window):
         self.add(vbox)
         
         self.OtpCode = Gtk.Button.new_with_label(totp.now())
-        self.OtpCode.set_tooltip_text(config_data[SelectedLabel]['name'])
+        self.OtpCode.set_tooltip_text(config_data['otp'][SelectedLabel]['name'])
         self.OtpCode.connect("clicked", self.on_otp_clicked)
         vbox.pack_start(self.OtpCode, True, True, 0)
 
@@ -47,7 +47,7 @@ class MyWindow(Gtk.Window):
         self.activity_mode = False
         
         self.OtpLabelStore = Gtk.ListStore(str)
-        for key in config_data:
+        for key in config_data['otp']:
                 self.OtpLabelStore.append([key])
 
         self.OtpLabelStoreSorted = Gtk.TreeModelSort.new_with_model(self.OtpLabelStore)
@@ -68,7 +68,7 @@ class MyWindow(Gtk.Window):
         new_value = ( ( 30 - time.time() % 30 ) / 30)
         self.ProgressBar.set_fraction(new_value)
         self.OtpCode.set_label(totp.now())
-        self.OtpCode.set_tooltip_text(config_data[SelectedLabel]['name'])
+        self.OtpCode.set_tooltip_text(config_data['otp'][SelectedLabel]['name'])
         return True
         
     def on_otp_changed(self, combo):
@@ -80,7 +80,7 @@ class MyWindow(Gtk.Window):
         if tree_iter is not None:
             model = combo.get_model()
             SelectedLabel = model[tree_iter][0]
-            gensel = f"['{SelectedLabel}']['genstring']"
+            gensel = f"['otp']['{SelectedLabel}']['genstring']"
             sops_cmd = f"sops -d --extract"
             genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
             totp = pyotp.TOTP(genstring.stdout)
@@ -100,8 +100,8 @@ if __name__ == '__main__':
     except yaml.YAMLError as exc:
         print(f"Error in configuration file: {exc}")
         sys.exit(1)
-    SelectedLabel = list(config_data.keys())[0]
-    gensel = f"['{SelectedLabel}']['genstring']"
+    SelectedLabel = list(config_data['otp'].keys())[0]
+    gensel = f"['otp']['{SelectedLabel}']['genstring']"
     sops_cmd = f"sops -d --extract"
     genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
     totp = pyotp.TOTP(genstring.stdout)
