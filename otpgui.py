@@ -75,11 +75,15 @@ class MyWindow(Gtk.Window):
         global totp
         global config_data
         global SelectedLabel
+        global config_file
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
             SelectedLabel = model[tree_iter][0]
-            totp = pyotp.TOTP(config_data[SelectedLabel]['genstring'])
+            gensel = f"['{SelectedLabel}']['genstring']"
+            sops_cmd = f"sops -d --extract"
+            genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+            totp = pyotp.TOTP(genstring.stdout)
     
     def on_otp_clicked(self,OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
@@ -99,7 +103,6 @@ if __name__ == '__main__':
     SelectedLabel = list(config_data.keys())[0]
     gensel = f"['{SelectedLabel}']['genstring']"
     sops_cmd = f"sops -d --extract"
-    print(gensel)
     genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
     totp = pyotp.TOTP(genstring.stdout)
     win = MyWindow()
