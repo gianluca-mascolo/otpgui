@@ -22,12 +22,39 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
 
+class OtpStore:
+    global sops_cmd
+    def __init__(self,config_file):
+        self.config_file = config_file
+        try:
+            with open(config_file, 'r') as file:
+                config_yaml = yaml.safe_load(file)
+                self.config_data = config_yaml['otp']
+                self.otplist = sorted(config_yaml['otp'])
+        except yaml.YAMLError as exc:
+            print(f"Error in configuration file: {exc}")
+            self.config_data = None
+            self.otplist = None
+
+    def getlabel(self,label):
+        self.label = label
+        self.tooltip = self.config_data[label]['name']
+
+    def getgenerator(self):
+        gensel = f"['otp']['{self.label}']['genstring']"
+        gen_decrypt = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+        self.genstring = gen_decrypt.stdout
+
+    def otpcode(self):
+        totp = pyotp.TOTP(self.genstring)
+        return totp.now()
+
+    def progress(self):
+        return ((30-time.time()%30)/30)
 class MyWindow(Gtk.Window):
 
-    def __init__(self):
-        global totp
-        global config_data
-        global SelectedLabel
+    def __init__(self,otp):
+        self.otp = otp
         Gtk.Window.__init__(self, title="OTP")
         
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
@@ -35,25 +62,22 @@ class MyWindow(Gtk.Window):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(vbox)
         
-        self.OtpCode = Gtk.Button.new_with_label(totp.now())
-        self.OtpCode.set_tooltip_text(config_data['otp'][SelectedLabel]['name'])
+        self.OtpCode = Gtk.Button.new_with_label(otp.otpcode())
+        self.OtpCode.set_tooltip_text(otp.tooltip)
         self.OtpCode.connect("clicked", self.on_otp_clicked)
         vbox.pack_start(self.OtpCode, True, True, 0)
 
-        self.ProgressBar = Gtk.ProgressBar(fraction=( ( 30 - time.time() % 30 ) / 30))
+        self.ProgressBar = Gtk.ProgressBar(fraction=otp.progress())
         vbox.pack_start(self.ProgressBar, True, True, 0)
 
         self.timeout_id = GLib.timeout_add(1000, self.on_timeout)
         self.activity_mode = False
         
         self.OtpLabelStore = Gtk.ListStore(str)
-        for key in config_data['otp']:
+        for key in otp.otplist:
                 self.OtpLabelStore.append([key])
 
-        self.OtpLabelStoreSorted = Gtk.TreeModelSort.new_with_model(self.OtpLabelStore)
-        self.OtpLabelStoreSorted.set_sort_column_id(0, Gtk.SortType.ASCENDING)
-
-        self.OtpCombo = Gtk.ComboBox.new_with_model(self.OtpLabelStoreSorted)
+        self.OtpCombo = Gtk.ComboBox.new_with_model(self.OtpLabelStore)
         self.OtpCombo.set_active(0)
         self.OtpCombo.connect("changed", self.on_otp_changed)
         renderer_text = Gtk.CellRendererText()
@@ -62,28 +86,19 @@ class MyWindow(Gtk.Window):
         vbox.pack_start(self.OtpCombo, False, False, 0)
         
     def on_timeout(self):
-        global totp
-        global config_data
-        global SelectedLabel
-        new_value = ( ( 30 - time.time() % 30 ) / 30)
+        new_value = self.otp.progress()
         self.ProgressBar.set_fraction(new_value)
-        self.OtpCode.set_label(totp.now())
-        self.OtpCode.set_tooltip_text(config_data['otp'][SelectedLabel]['name'])
+        self.OtpCode.set_label(self.otp.otpcode())
+        self.OtpCode.set_tooltip_text(self.otp.tooltip)
         return True
         
     def on_otp_changed(self, combo):
-        global totp
-        global config_data
-        global SelectedLabel
-        global config_file
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
             SelectedLabel = model[tree_iter][0]
-            gensel = f"['otp']['{SelectedLabel}']['genstring']"
-            sops_cmd = f"sops -d --extract"
-            genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
-            totp = pyotp.TOTP(genstring.stdout)
+            self.otp.getlabel(SelectedLabel)
+            self.otp.getgenerator()
     
     def on_otp_clicked(self,OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
@@ -93,19 +108,11 @@ if __name__ == '__main__':
     parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
     args = parser.parse_args()
     config_file = args.config_file
-
-    try:
-        with open(config_file, 'r') as file:
-            config_data = yaml.safe_load(file)
-    except yaml.YAMLError as exc:
-        print(f"Error in configuration file: {exc}")
-        sys.exit(1)
-    SelectedLabel = list(config_data['otp'].keys())[0]
-    gensel = f"['otp']['{SelectedLabel}']['genstring']"
     sops_cmd = f"sops -d --extract"
-    genstring = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
-    totp = pyotp.TOTP(genstring.stdout)
-    win = MyWindow()
+    otp = OtpStore(config_file=config_file)
+    otp.getlabel(otp.otplist[0])
+    otp.getgenerator()
+    win = MyWindow(otp)
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
     Gtk.main()
