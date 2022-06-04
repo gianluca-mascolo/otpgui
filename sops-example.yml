@@ -1,0 +1,4 @@
+creation_rules:
+  - path_regex: otp.yml$
+    pgp: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' # your GPG key or other encryption method
+    encrypted_regex: '^(genstring)$'
