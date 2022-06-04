@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "otpgui"
+version = "0.1.0"
+description = "Otp Generator GUI with python"
+authors = ["Gianluca Mascolo <gianluca@gurutech.it>"]
+license = "GPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+PyYAML = "^6.0"
+pyotp = "^2.6.0"
+PyGObject = "^3.42.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
