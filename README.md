@@ -8,9 +8,11 @@ An OTP generator compatible with totp written in python.
 
 ## Configuration file
 The configuration file is a yaml file with this information:
+
 - a label (to be shown in the dropdown menu)
 - an extended "name" for that label
 - the string that generate the otp code
+
 Because the generator string is a sensitive data, it must be encrypted in the configuration file with [sops](https://github.com/mozilla/sops).
 
 ## Encryption
