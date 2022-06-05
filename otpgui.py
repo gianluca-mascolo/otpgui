@@ -81,7 +81,7 @@ class MyWindow(Gtk.Window):
                 self.OtpLabelStore.append([key])
 
         self.OtpCombo = Gtk.ComboBox.new_with_model(self.OtpLabelStore)
-        self.OtpCombo.set_active(0)
+        self.OtpCombo.set_active(otp.otplist.index(otp.label))
         self.OtpCombo.connect("changed", self.on_otp_changed)
         renderer_text = Gtk.CellRendererText()
         self.OtpCombo.pack_start(renderer_text, True)
@@ -110,9 +110,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
     parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
+    parser.add_argument("-i","--interface", help="Interface to use. Default: gtk",choices=["gtk", "script"], default="gtk")
+    parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
+
     args = parser.parse_args()
     config_file = args.config_file
     encryption_method = args.encryption_method
+    interface = args.interface
+    otplabel = args.label
     if encryption_method == "sops":
         try:
             subprocess.run(f"sops -v",capture_output=True,shell=True,universal_newlines=True,check=True)
@@ -121,9 +126,19 @@ if __name__ == '__main__':
             print(f"{err}")
             sys.exit(1)
     otp = OtpStore(config_file=config_file,encryption_method=encryption_method)
-    otp.getlabel(otp.otplist[0])
+    if otplabel == None:
+        otp.getlabel(otp.otplist[0])
+    else:
+        try:
+            otp.getlabel(otplabel)
+        except KeyError as err:
+            print(f"Label not found\nError: {err}")
+            sys.exit(1)
     otp.getgenerator()
-    win = MyWindow(otp)
-    win.connect("destroy", Gtk.main_quit)
-    win.show_all()
-    Gtk.main()
+    if interface == "gtk":
+        win = MyWindow(otp)
+        win.connect("destroy", Gtk.main_quit)
+        win.show_all()
+        Gtk.main()
+    elif interface == "script":
+        print("OTP_LABEL={otplabel}\nOTP_CODE={otpcode}".format(otplabel=otp.label,otpcode=otp.otpcode()))
