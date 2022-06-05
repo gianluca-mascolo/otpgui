@@ -16,16 +16,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import yaml,gi,time,pyotp,subprocess,argparse
-from os.path import expanduser
+import yaml,gi,time,pyotp,subprocess,argparse,sys
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
 
 class OtpStore:
-    global sops_cmd
-    def __init__(self,config_file):
+    def __init__(self,config_file,encryption_method):
         self.config_file = config_file
+        self.sops_cmd = f"sops -d --extract"
+        self.encryption_method=encryption_method
         try:
             with open(config_file, 'r') as file:
                 config_yaml = yaml.safe_load(file)
@@ -41,9 +41,12 @@ class OtpStore:
         self.tooltip = self.config_data[label]['name']
 
     def getgenerator(self):
-        gensel = f"['otp']['{self.label}']['genstring']"
-        gen_decrypt = subprocess.run(f"{sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
-        self.genstring = gen_decrypt.stdout
+        if self.encryption_method == "sops":
+            gensel = f"['otp']['{self.label}']['genstring']"
+            gen_decrypt = subprocess.run(f"{self.sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+            self.genstring = gen_decrypt.stdout
+        elif self.encryption_method == "plain":
+            self.genstring = self.config_data[self.label]['genstring']
 
     def otpcode(self):
         totp = pyotp.TOTP(self.genstring)
@@ -106,10 +109,18 @@ class MyWindow(Gtk.Window):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
+    parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
     args = parser.parse_args()
     config_file = args.config_file
-    sops_cmd = f"sops -d --extract"
-    otp = OtpStore(config_file=config_file)
+    encryption_method = args.encryption_method
+    if encryption_method == "sops":
+        try:
+            subprocess.run(f"sops -v",capture_output=True,shell=True,universal_newlines=True,check=True)
+        except subprocess.CalledProcessError as err:
+            print("Cannot run sops executable. Is it in your PATH?")
+            print(f"{err}")
+            sys.exit(1)
+    otp = OtpStore(config_file=config_file,encryption_method=encryption_method)
     otp.getlabel(otp.otplist[0])
     otp.getgenerator()
     win = MyWindow(otp)
