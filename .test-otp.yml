@@ -1,3 +1,4 @@
-label: 
- name: "test name"
- genstring: "ABCDEFGHIJKLMNOP"
+otp:
+  testlabel:
+    name: "test name"
+    genstring: "ABCDEFGHIJKLMNOP"

@@ -1,24 +1,18 @@
-#!/usr/bin/env python2
-import yaml,time,pyotp
+#!/usr/bin/env python3
 
-def getconf():
-    try:
-        config_data = yaml.safe_load(file('.test-otp.yml', 'r'))
-    except yaml.YAMLError, exc:
-        print "Error in configuration file:", exc
-        sys.exit(1)
+from otpgui import OtpStore
+import re
 
-    return config_data
-    
-def test_getconf():
-    print "loading test configuration"
-    assert getconf().keys()[0] == 'label'
-    print "getting config section 'name'"
-    assert getconf()['label']['name'] == 'test name'
-    print "getting config section 'genstring'"
-    assert getconf()['label']['genstring'] == 'ABCDEFGHIJKLMNOP'
-
-def test_genotp():
-    print "generating well known otp from configuration"
-    totp = pyotp.TOTP(getconf()['label']['genstring'])
-    assert totp.at(1529158509) == '045859'
+def createotp():
+    otp = OtpStore(config_file=".test-otp.yml",encryption_method="plain")
+    otp.getlabel(otp.otplist[0])
+    otp.getgenerator()
+    return otp
+def test_otp():
+    otp=createotp()
+    assert otp.label == 'testlabel'
+    assert otp.tooltip == 'test name'
+    assert otp.genstring == 'ABCDEFGHIJKLMNOP'
+    otpcode = otp.otpcode()
+    otpcheck = re.compile('^[0-9]{6}$')
+    assert otpcheck.match(otpcode)
