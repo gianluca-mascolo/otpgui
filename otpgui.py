@@ -43,7 +43,7 @@ class OtpStore:
     def getgenerator(self):
         if self.encryption_method == "sops":
             gensel = f"['otp']['{self.label}']['genstring']"
-            gen_decrypt = subprocess.run(f"{self.sops_cmd} \"{gensel}\" {config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
+            gen_decrypt = subprocess.run(f"{self.sops_cmd} \"{gensel}\" {self.config_file}",capture_output=True,shell=True,universal_newlines=True,check=True)
             self.genstring = gen_decrypt.stdout
         elif self.encryption_method == "plain":
             self.genstring = self.config_data[self.label]['genstring']
@@ -106,7 +106,7 @@ class MyWindow(Gtk.Window):
     def on_otp_clicked(self,OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
     parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
@@ -142,3 +142,6 @@ if __name__ == '__main__':
         Gtk.main()
     elif interface == "script":
         print("OTP_LABEL={otplabel}\nOTP_CODE={otpcode}".format(otplabel=otp.label,otpcode=otp.otpcode()))
+
+if __name__ == '__main__':
+    main()
