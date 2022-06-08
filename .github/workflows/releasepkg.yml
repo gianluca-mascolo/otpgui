@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-
+      - run: echo ${{github.ref}}
       - name: Python Poetry Action
         uses: abatilo/actions-poetry@v2.1.3
         if: github.ref == 'refs/heads/main'
