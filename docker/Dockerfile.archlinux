@@ -1,0 +1,9 @@
+FROM archlinux:latest
+ARG TZ
+RUN pacman -Syyuu --noconfirm --noprogressbar && \
+    pacman -S sudo base-devel git --noconfirm --noprogressbar && \
+    groupadd -g 1000 testgroup && \
+    useradd -g 1000 -d /home/testuser -m -u 1000 -s /bin/bash testuser && \
+    echo "testuser ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/testuser
+USER testuser
+WORKDIR /home/testuser
