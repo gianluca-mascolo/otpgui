@@ -43,6 +43,10 @@ services:
         target: /home/testuser/.Xauthority
         read_only: false
       - type: bind
-        source: $PWD/
-        target: /home/testuser/code
+        source: $PWD/archpkg
+        target: /home/testuser/archpkg
         read_only: true
+      - type: bind
+        source: $PWD/archbuild
+        target: /home/testuser/build
+        read_only: false
