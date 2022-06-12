@@ -1,0 +1,18 @@
+makedepends=(python-build python-installer python-poetry)
+depends=(python python-yaml python-gobject python-pyotp gtk3 sops)
+source=('$OTP_SOURCE')
+sha256sums=('$OTP_SHA256')
+pkgname=otpgui
+pkgver=$GIT_TAG
+arch=('any')
+license=('GPL')
+pkgrel=1
+build() {
+    cd $pkgname-$pkgver
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd $pkgname-$pkgver
+    python -m installer --destdir="$pkgdir" dist/*.whl
+}
