@@ -15,5 +15,5 @@ jobs:
         run: poetry build -f wheel
       - uses: actions/upload-artifact@v3
         with:
-          name: otpgui-${GITHUB_REF##refs/tags/}-py3-none-any.whl
-          path: dist/otpgui-${GITHUB_REF##refs/tags/}-py3-none-any.whl
+          name: python-wheel
+          path: dist/otpgui-*-py3-none-any.whl
