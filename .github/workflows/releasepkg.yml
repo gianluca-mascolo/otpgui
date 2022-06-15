@@ -15,10 +15,16 @@ jobs:
         run: poetry version ${GITHUB_REF##refs/tags/}
       - name: Install dependencies
         run: poetry build -f wheel
-      - uses: actions/upload-artifact@v3
-        with:
-          name: python-wheel
-          path: dist/otpgui-*-py3-none-any.whl
+      - name: Setup Arch Docker
+        run: docker-compose build archpy
+      - name: Build Arch Artifact
+        run: GIT_TAG=${GITHUB_REF##refs/tags/} make arch-pkg
+      - name: Test Arch Artifact
+        run: GIT_TAG=${GITHUB_REF##refs/tags/} make arch-install
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: python-wheel
+      #     path: dist/otpgui-*-py3-none-any.whl
       - name: Prepare AUR upload
         run: |
           [ -d ~/.ssh ] || mkdir -p [ ~/.ssh ]

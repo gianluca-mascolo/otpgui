@@ -35,14 +35,6 @@ services:
         target: /home/testuser/otp.yml
         read_only: true
       - type: bind
-        source: /tmp/.X11-unix
-        target: /tmp/.X11-unix
-        read_only: true
-      - type: bind
-        source: $HOME/.Xauthority
-        target: /home/testuser/.Xauthority
-        read_only: false
-      - type: bind
         source: $PWD/archpkg
         target: /home/testuser/archpkg
         read_only: true
