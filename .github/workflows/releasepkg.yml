@@ -19,3 +19,13 @@ jobs:
         with:
           name: python-wheel
           path: dist/otpgui-*-py3-none-any.whl
+      - name: Prepare AUR upload
+        run: |
+          [ -d ~/.ssh ] || mkdir -p [ ~/.ssh ]
+          chmod 0700 ~/.ssh
+          echo "${{ secrets.AUR_SSH_KEY }}" | base64 -d > ~/.ssh/aur
+          chmod 0600 ~/.ssh/aur
+          ssh-keyscan -H aur.archlinux.org > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/known_hosts
+          echo -e 'Host aur.archlinux.org\n  User aur\n  IdentityFile ~/.ssh/aur\n  ConnectTimeout 10' > ~/.ssh/config
+          ssh aur.archlinux.org list-repos
