@@ -1,9 +1,11 @@
 FROM archlinux:latest
 ARG TZ
+ARG USER_UID
+ARG USER_GID
 RUN pacman -Syyuu --noconfirm --noprogressbar && \
     pacman -S sudo wget base-devel git --noconfirm --noprogressbar && \
-    groupadd -g 1000 testgroup && \
-    useradd -g 1000 -d /home/testuser -m -u 1000 -s /bin/bash testuser && \
+    groupadd -g $USER_GID testgroup && \
+    useradd -g $USER_GID -d /home/testuser -m -u $USER_UID -s /bin/bash testuser && \
     echo "testuser ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/testuser
 USER testuser
 WORKDIR /home/testuser
