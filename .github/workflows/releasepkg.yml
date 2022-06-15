@@ -32,5 +32,4 @@ jobs:
           ssh-add ~/.ssh/aur
           ssh-add -l
           echo -e 'Host aur.archlinux.org\n  User aur\n  IdentityFile ~/.ssh/aur\n  ConnectTimeout 10' > ~/.ssh/config
-          ssh-add
           ssh aur.archlinux.org list-repos
