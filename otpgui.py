@@ -20,6 +20,7 @@ import yaml,gi,time,pyotp,subprocess,argparse,sys
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
+from otpversion import program_version
 
 class OtpStore:
     def __init__(self,config_file,encryption_method):
@@ -112,8 +113,13 @@ def main():
     parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
     parser.add_argument("-i","--interface", help="Interface to use. Default: gtk",choices=["gtk", "script"], default="gtk")
     parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
+    parser.add_argument("-v","--version", help="show version",action="store_true")
 
     args = parser.parse_args()
+    if args.version:
+        print(f"{program_version}")
+        sys.exit(0)
+
     config_file = args.config_file
     encryption_method = args.encryption_method
     interface = args.interface
