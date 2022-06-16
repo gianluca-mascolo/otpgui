@@ -2,6 +2,7 @@ PKGVER:=$(GIT_TAG)
 arch-clean:
 	rm -rf archbuild/pkg
 	rm -rf archbuild/src
+	rm -rf archbuild/otpgui*
 	rm -f archbuild/*
 	docker-compose down
 arch-pkg:
