@@ -21,9 +21,14 @@ jobs:
           export USER_GID=$(id -g)
           docker-compose build archpy
       - name: Build Arch Artifact
-        run: GIT_TAG=${GITHUB_REF##refs/tags/} make arch-pkg
+        run: |
+          GIT_TAG=${GITHUB_REF##refs/tags/} make arch-pkg
+          ls -la archbuild/
+          id
       - name: Test Arch Artifact
-        run: GIT_TAG=${GITHUB_REF##refs/tags/} make arch-install
+        run: |
+          ls -la archbuild/
+          GIT_TAG=${GITHUB_REF##refs/tags/} make arch-install
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: python-wheel
