@@ -51,8 +51,11 @@ jobs:
           source ~/.ssh/agent
           AUR_GIT_DIR=$(mktemp -d)
           git clone aur@aur.archlinux.org:otpgui.git $AUR_GIT_DIR
+          cp -f archbuild/PKGBUILD $AUR_GIT_DIR
+          cp -f archbuild/.SRCINFO $AUR_GIT_DIR
           cd $AUR_GIT_DIR
           git config user.email ${{ secrets.AUR_USER_MAIL }}
           git config user.name ${{ secrets.AUR_USER_NAME }}
           git add PKGBUILD .SRCINFO
+          git commit -m "Released version ${GITHUB_REF##refs/tags/}"
           git push origin master
