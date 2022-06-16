@@ -1,6 +1,8 @@
 PKGVER:=$(GIT_TAG)
 arch-clean:
-	find archbuild -type f ! -path '*.gitkeep' -exec rm -f '{}' ';'
+	rm -rf archbuild/pkg
+	rm -rf archbuild/src
+	rm -f archbuild/*
 	docker-compose down
 arch-pkg:
 	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)

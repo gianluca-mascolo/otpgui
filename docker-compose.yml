@@ -24,7 +24,6 @@ services:
       args:
         TZ: Europe/Rome
         USER_UID: $USER_UID
-        USER_GID: $USER_GID
     environment:
       DISPLAY: ":0.0"
     volumes:
