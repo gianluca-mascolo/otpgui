@@ -4,6 +4,10 @@ version = "0.1.2"
 description = "Otp Generator GUI with python"
 authors = ["Gianluca Mascolo <gianluca@gurutech.it>"]
 license = "GPL-3.0-or-later"
+packages = [
+    { include = "otpgui.py" },
+    { include = "otpversion.py" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
