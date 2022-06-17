@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import yaml,gi,time,pyotp,subprocess,argparse,sys
+import yaml,gi,time,pyotp,subprocess,argparse,sys,os
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
@@ -109,19 +109,58 @@ class MyWindow(Gtk.Window):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
-    parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
+    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str)
+    parser.add_argument("-e","--encryption-method", help="Encryption method to use.",choices=["plain", "sops"])
     parser.add_argument("-i","--interface", help="Interface to use. Default: gtk",choices=["gtk", "script"], default="gtk")
     parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
     parser.add_argument("-v","--version", help="show version",action="store_true")
 
+    homedir = os.environ["HOME"]
+    xdg_config_home = os.environ.get("XDG_CONFIG_HOME",f"{homedir}/.config")
+    otp_config_home = xdg_config_home + "/otpgui"
+
+    if not os.path.isdir(otp_config_home):
+        os.mkdir(otp_config_home)
+
+    otp_config_file = otp_config_home + "/config.yml"
+
+    if not os.path.isfile(otp_config_file):
+        print("writing configuration")
+        otp_config_data = {"config_file": f"{otp_config_home}/otp.yml","encryption_method": "plain"}
+        with open(otp_config_file, 'w') as f:
+            yaml.dump(otp_config_data, f)
+    else:
+        print("loading configuration")
+        with open(otp_config_file, 'r') as f:
+            otp_config_data = yaml.safe_load(f)
+
     args = parser.parse_args()
+
     if args.version:
         print(f"{program_version}")
         sys.exit(0)
 
-    config_file = args.config_file
-    encryption_method = args.encryption_method
+    if args.config_file:
+        config_file = args.config_file
+    else:
+        config_file = otp_config_data['config_file']
+        if not os.path.isfile(config_file):
+            print("writing default configuration")
+            default_config_file = {"otp": 
+                                    { "default":
+                                        {
+                                            "name": "default_name",
+                                            "genstring":"ABCDEFGHIJKLMNOP"
+                                        }
+                                    }
+                                }
+            with open(config_file, 'w') as f:
+                yaml.dump(default_config_file, f)
+
+    if args.encryption_method:
+        encryption_method = args.encryption_method
+    else:
+        encryption_method = otp_config_data['encryption_method']
     interface = args.interface
     otplabel = args.label
     if encryption_method == "sops":
