@@ -47,3 +47,11 @@ services:
         source: $PWD/
         target: /home/testuser/gitsrc
         read_only: true
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+        read_only: true
+      - type: bind
+        source: $HOME/.Xauthority
+        target: /home/testuser/.Xauthority
+        read_only: false
