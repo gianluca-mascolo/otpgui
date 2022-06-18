@@ -157,10 +157,11 @@ def main():
     if args.version:
         print(f"{program_version}")
         sys.exit(0)
+    config_file = args.config_file
+    encryption_method = args.encryption_method
     interface = args.interface
     otplabel = args.label
-    encryption_method = args.encryption_method
-    config_file = args.config_file
+
 
     if encryption_method == "sops":
         try:
