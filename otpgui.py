@@ -22,6 +22,29 @@ gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
 from otpversion import program_version
 
+class OtpSettings:
+    def __init__(self):
+        homedir = os.environ["HOME"]
+        xdg_config_home = os.environ.get("XDG_CONFIG_HOME",f"{homedir}/.config")
+        otp_settings_home = xdg_config_home + "/otpgui"
+        otp_settings_file = otp_settings_home + "/settings.yml"
+        if not os.path.isdir(otp_settings_home):
+            os.makedirs(otp_settings_home)
+        if not os.path.isfile(otp_settings_file):
+            self.otp_settings_data = {"config_file": f"{otp_settings_home}/otp.yml","encryption_method": "plain"}
+            with open(otp_settings_file, 'w') as f:
+                yaml.dump(self.otp_settings_data, f)
+        else:
+            try:
+                with open(otp_settings_file, 'r') as f:
+                    self.otp_settings_data = yaml.safe_load(f)
+            except yaml.YAMLError as exc:
+                print(f"Cannot read settings file: {exc}")
+                self.otp_settings_data = None
+
+    def settings(self):
+        return self.otp_settings_data
+
 class OtpStore:
     def __init__(self,config_file,encryption_method):
         self.config_file = config_file
@@ -115,24 +138,8 @@ def main():
     parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
     parser.add_argument("-v","--version", help="show version",action="store_true")
 
-    homedir = os.environ["HOME"]
-    xdg_config_home = os.environ.get("XDG_CONFIG_HOME",f"{homedir}/.config")
-    otp_config_home = xdg_config_home + "/otpgui"
-
-    if not os.path.isdir(otp_config_home):
-        os.mkdir(otp_config_home)
-
-    otp_config_file = otp_config_home + "/config.yml"
-
-    if not os.path.isfile(otp_config_file):
-        print("writing configuration")
-        otp_config_data = {"config_file": f"{otp_config_home}/otp.yml","encryption_method": "plain"}
-        with open(otp_config_file, 'w') as f:
-            yaml.dump(otp_config_data, f)
-    else:
-        print("loading configuration")
-        with open(otp_config_file, 'r') as f:
-            otp_config_data = yaml.safe_load(f)
+    otp_settings_init = OtpSettings()
+    otp_settings = otp_settings_init.settings()
 
     args = parser.parse_args()
 
@@ -143,7 +150,7 @@ def main():
     if args.config_file:
         config_file = args.config_file
     else:
-        config_file = otp_config_data['config_file']
+        config_file = otp_settings['config_file']
         if not os.path.isfile(config_file):
             print("writing default configuration")
             default_config_file = {"otp": 
@@ -160,7 +167,7 @@ def main():
     if args.encryption_method:
         encryption_method = args.encryption_method
     else:
-        encryption_method = otp_config_data['encryption_method']
+        encryption_method = otp_settings['encryption_method']
     interface = args.interface
     otplabel = args.label
     if encryption_method == "sops":

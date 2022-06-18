@@ -7,6 +7,8 @@ services:
       args:
         DEBIAN_FRONTEND: noninteractive
         TZ: Europe/Rome
+    environment:
+      DISPLAY: ":0.0"
     volumes:
       - type: bind
         source: $PWD/dist
@@ -16,6 +18,14 @@ services:
         source: $PWD/.test-otp.yml
         target: /home/testuser/otp.yml
         read_only: true
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+        read_only: true
+      - type: bind
+        source: $HOME/.Xauthority
+        target: /home/testuser/.Xauthority
+        read_only: false
   archpy:
     image: archpy
     build:
