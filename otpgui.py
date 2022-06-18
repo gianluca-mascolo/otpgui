@@ -162,7 +162,6 @@ def main():
     interface = args.interface
     otplabel = args.label
 
-
     if encryption_method == "sops":
         try:
             subprocess.run(f"sops -v",capture_output=True,shell=True,universal_newlines=True,check=True)
