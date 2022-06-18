@@ -17,6 +17,8 @@ jobs:
         run: poetry build -f wheel
       - name: Setup Arch Docker
         run: |
+          touch /tmp/.X11-unix
+          touch ~/.Xauthority
           echo "USER_UID=$(id -u)" > .env
           docker-compose build archpy
       - name: Build Arch Artifact

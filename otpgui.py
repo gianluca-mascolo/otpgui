@@ -16,11 +16,46 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import yaml,gi,time,pyotp,subprocess,argparse,sys
+import yaml,gi,time,pyotp,subprocess,argparse,sys,os
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk,Gtk,GObject,GLib
 from otpversion import program_version
+
+class OtpSettings:
+    def __init__(self):
+        homedir = os.environ["HOME"]
+        xdg_config_home = os.environ.get("XDG_CONFIG_HOME",f"{homedir}/.config")
+        otp_settings_home = xdg_config_home + "/otpgui"
+        otp_settings_file = otp_settings_home + "/settings.yml"
+        if not os.path.isdir(otp_settings_home):
+            os.makedirs(otp_settings_home)
+        if not os.path.isfile(otp_settings_file):
+            self.otp_settings_data = {"config_file": f"{otp_settings_home}/otp.yml","encryption_method": "plain"}
+            with open(otp_settings_file, 'w') as f:
+                yaml.dump(self.otp_settings_data, f)
+        else:
+            try:
+                with open(otp_settings_file, 'r') as f:
+                    self.otp_settings_data = yaml.safe_load(f)
+            except yaml.YAMLError as exc:
+                print(f"Cannot read settings file: {exc}")
+                self.otp_settings_data = None
+
+        if not os.path.isfile(self.otp_settings_data['config_file']):
+            default_config_file = {"otp": 
+                                    { "default":
+                                        {
+                                            "name": "default tooltip",
+                                            "genstring":"ABCDEFGHIJKLMNOP"
+                                        }
+                                    }
+                                }
+            with open(self.otp_settings_data['config_file'], 'w') as f:
+                yaml.dump(default_config_file, f)
+
+    def settings(self):
+        return self.otp_settings_data
 
 class OtpStore:
     def __init__(self,config_file,encryption_method):
@@ -108,9 +143,12 @@ class MyWindow(Gtk.Window):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
 def main():
+    otp_settings_init = OtpSettings()
+    otp_settings = otp_settings_init.settings()
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,required=True)
-    parser.add_argument("-e","--encryption-method", help="Encryption method to use. Default: sops",choices=["plain", "sops"], default="sops")
+    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,default=otp_settings['config_file'])
+    parser.add_argument("-e","--encryption-method", help="Encryption method to use.",choices=["plain", "sops"],default=otp_settings['encryption_method'])
     parser.add_argument("-i","--interface", help="Interface to use. Default: gtk",choices=["gtk", "script"], default="gtk")
     parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
     parser.add_argument("-v","--version", help="show version",action="store_true")
@@ -119,11 +157,11 @@ def main():
     if args.version:
         print(f"{program_version}")
         sys.exit(0)
-
     config_file = args.config_file
     encryption_method = args.encryption_method
     interface = args.interface
     otplabel = args.label
+
     if encryption_method == "sops":
         try:
             subprocess.run(f"sops -v",capture_output=True,shell=True,universal_newlines=True,check=True)
