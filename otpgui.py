@@ -46,7 +46,7 @@ class OtpSettings:
             default_config_file = {"otp": 
                                     { "default":
                                         {
-                                            "name": "default_name",
+                                            "name": "default tooltip",
                                             "genstring":"ABCDEFGHIJKLMNOP"
                                         }
                                     }
@@ -143,34 +143,25 @@ class MyWindow(Gtk.Window):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
 
 def main():
+    otp_settings_init = OtpSettings()
+    otp_settings = otp_settings_init.settings()
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str)
-    parser.add_argument("-e","--encryption-method", help="Encryption method to use.",choices=["plain", "sops"])
+    parser.add_argument("-c","--config-file", help="Path to otp.yml configuration file", type=str,default=otp_settings['config_file'])
+    parser.add_argument("-e","--encryption-method", help="Encryption method to use.",choices=["plain", "sops"],default=otp_settings['encryption_method'])
     parser.add_argument("-i","--interface", help="Interface to use. Default: gtk",choices=["gtk", "script"], default="gtk")
     parser.add_argument("-l","--label", help="Otp label to display on startup or script. Default to first label (sorted alphabetical) in configuration file.", type=str)
     parser.add_argument("-v","--version", help="show version",action="store_true")
 
-    otp_settings_init = OtpSettings()
-    otp_settings = otp_settings_init.settings()
-
     args = parser.parse_args()
-
     if args.version:
         print(f"{program_version}")
         sys.exit(0)
-
-    if args.config_file:
-        config_file = args.config_file
-    else:
-        config_file = otp_settings['config_file']
-
-    if args.encryption_method:
-        encryption_method = args.encryption_method
-    else:
-        encryption_method = otp_settings['encryption_method']
-
     interface = args.interface
     otplabel = args.label
+    encryption_method = args.encryption_method
+    config_file = args.config_file
+
     if encryption_method == "sops":
         try:
             subprocess.run(f"sops -v",capture_output=True,shell=True,universal_newlines=True,check=True)
