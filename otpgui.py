@@ -42,6 +42,18 @@ class OtpSettings:
                 print(f"Cannot read settings file: {exc}")
                 self.otp_settings_data = None
 
+        if not os.path.isfile(self.otp_settings_data['config_file']):
+            default_config_file = {"otp": 
+                                    { "default":
+                                        {
+                                            "name": "default_name",
+                                            "genstring":"ABCDEFGHIJKLMNOP"
+                                        }
+                                    }
+                                }
+            with open(self.otp_settings_data['config_file'], 'w') as f:
+                yaml.dump(default_config_file, f)
+
     def settings(self):
         return self.otp_settings_data
 
@@ -151,23 +163,12 @@ def main():
         config_file = args.config_file
     else:
         config_file = otp_settings['config_file']
-        if not os.path.isfile(config_file):
-            print("writing default configuration")
-            default_config_file = {"otp": 
-                                    { "default":
-                                        {
-                                            "name": "default_name",
-                                            "genstring":"ABCDEFGHIJKLMNOP"
-                                        }
-                                    }
-                                }
-            with open(config_file, 'w') as f:
-                yaml.dump(default_config_file, f)
 
     if args.encryption_method:
         encryption_method = args.encryption_method
     else:
         encryption_method = otp_settings['encryption_method']
+
     interface = args.interface
     otplabel = args.label
     if encryption_method == "sops":
