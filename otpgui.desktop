@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=OTP gui
+Exec=otpgui
+Icon=otpgui
+Terminal=false
+Categories=Utility;
+StartupNotify=true
