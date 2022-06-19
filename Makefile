@@ -4,6 +4,7 @@ arch-clean:
 	rm -rf archbuild/src
 	rm -rf archbuild/otpgui*
 	rm -f archbuild/*
+	rm -f archbuild/.SRCINFO
 	docker-compose down
 arch-pkg:
 	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)

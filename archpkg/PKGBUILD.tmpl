@@ -1,7 +1,8 @@
 # Maintainer: Gianluca Mascolo <gianluca@gurutech.it>
 
 makedepends=(python-build python-installer python-poetry python-pytest)
-depends=(python python-yaml python-gobject python-pyotp gtk3 sops)
+depends=(python-yaml python-gobject python-pyotp gtk3 hicolor-icon-theme)
+optdepends=('sops: Enable otp encryption')
 source=('$OTP_SOURCE')
 sha256sums=('$OTP_SHA256')
 pkgname=otpgui
@@ -22,4 +23,11 @@ check(){
 package() {
     cd $pkgname-$pkgver
     python -m installer --destdir="$pkgdir" dist/*.whl
+    for Icon in $(find icons/ -name otpgui.png); do {
+        IconDir=$(dirname "$Icon")
+        IconSize=$(basename "$IconDir")
+        install -D -m 0644 $Icon ${pkgdir}/usr/share/icons/hicolor/${IconSize}/apps/otpgui.png
+    }
+    done
+    install -D -m 0644 otpgui.desktop /usr/share/applications/otpgui.desktop
 }

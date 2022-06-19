@@ -35,6 +35,7 @@ jobs:
           files: |
             dist/otpgui-*-py3-none-any.whl
             archbuild/otpgui-*-any.pkg.tar.zst
+          generate_release_notes: true
       - name: Prepare AUR upload
         run: |
           [ -d ~/.ssh ] || mkdir -p [ ~/.ssh ]

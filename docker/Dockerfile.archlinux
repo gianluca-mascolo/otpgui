@@ -2,7 +2,7 @@ FROM archlinux:latest
 ARG TZ
 ARG USER_UID
 RUN pacman -Syyuu --noconfirm --noprogressbar && \
-    pacman -S sudo wget base-devel git --noconfirm --noprogressbar && \
+    pacman -S sudo wget base-devel git namcap --noconfirm --noprogressbar && \
     useradd -g users -d /home/testuser -m -u $USER_UID -s /bin/bash testuser && \
     echo "testuser ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/testuser
 USER testuser

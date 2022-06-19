@@ -8,6 +8,9 @@ packages = [
     { include = "otpgui.py" },
     { include = "otpversion.py" },
 ]
+classifiers = [
+    "Environment :: X11 Applications :: GTK"
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
