@@ -22,4 +22,10 @@ check(){
 package() {
     cd $pkgname-$pkgver
     python -m installer --destdir="$pkgdir" dist/*.whl
+    for Icon in $(find icons/ -name otpgui.png); do {
+        IconDir=$(dirname "$Icon")
+        IconSize=$(basename "$IconDir")
+        install -D -m 0644 $Icon ${pkgdir}/usr/share/icons/hicolor/${IconSize}/apps
+    }
+    done
 }
