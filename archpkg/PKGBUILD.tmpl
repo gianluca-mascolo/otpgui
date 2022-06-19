@@ -25,7 +25,7 @@ package() {
     for Icon in $(find icons/ -name otpgui.png); do {
         IconDir=$(dirname "$Icon")
         IconSize=$(basename "$IconDir")
-        install -D -m 0644 $Icon ${pkgdir}/usr/share/icons/hicolor/${IconSize}/apps
+        install -D -m 0644 $Icon ${pkgdir}/usr/share/icons/hicolor/${IconSize}/apps/otpgui.png
     }
     done
 }
