@@ -9,7 +9,7 @@ if ( [ "$GIT_TAG" = "dev" ] ); then {
 } else {
     export OTP_SOURCE="otpgui-${GIT_TAG}.tar.gz::https://github.com/gianluca-mascolo/otpgui/archive/refs/tags/${GIT_TAG}.tar.gz"
     OTP_TMP=$(mktemp --suffix ".tar.gz")
-    wget --timeout=30 --tries=3 -O ${OTP_TMP} "$OTP_SOURCE"
+    wget --timeout=30 --tries=3 -O ${OTP_TMP} "https://github.com/gianluca-mascolo/otpgui/archive/refs/tags/${GIT_TAG}.tar.gz"
     tar tzf ${OTP_TMP} && OTP_SHA256=$(sha256sum -b ${OTP_TMP} | awk '{print $1}')
     [ -f ${OTP_TMP} ] && rm -f ${OTP_TMP}
 }
