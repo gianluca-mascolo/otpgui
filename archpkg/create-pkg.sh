@@ -14,6 +14,11 @@ if ( [ "$GIT_TAG" = "dev" ] ); then {
     [ -f ${OTP_TMP} ] && rm -f ${OTP_TMP}
 }
 fi
+
+cat << EOF 
+PACKAGER="Gianluca Mascolo <gianluca@gurutech.it>"
+EOF > ~/.makepkg.conf
+
 echo $OTP_SOURCE
 echo $OTP_SHA256
 export OTP_SOURCE OTP_SHA256 GIT_TAG
