@@ -15,17 +15,19 @@ if ( [ "$GIT_TAG" = "dev" ] ); then {
 }
 fi
 
-cat << EOF 
+cat << EOF > ~/.makepkg.conf
 PACKAGER="Gianluca Mascolo <gianluca@gurutech.it>"
-EOF > ~/.makepkg.conf
+EOF
 
 echo $OTP_SOURCE
 echo $OTP_SHA256
-cat ~/.makepkg.conf
 export OTP_SOURCE OTP_SHA256 GIT_TAG
+
 envsubst '$OTP_SOURCE,$OTP_SHA256,$GIT_TAG' < /home/testuser/archpkg/PKGBUILD.tmpl > /home/testuser/build/PKGBUILD
 pushd /home/testuser/build
 sudo pacman -Sy --noconfirm --noprogressbar
 makepkg -s --noconfirm --noprogressbar
 makepkg --printsrcinfo > .SRCINFO
+echo "*** PACKAGE INFORMATION ***"
+pacman -Qpi otpgui-${GIT_TAG}-1-any.pkg.tar.zst
 popd
