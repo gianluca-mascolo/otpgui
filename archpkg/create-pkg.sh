@@ -21,6 +21,7 @@ EOF > ~/.makepkg.conf
 
 echo $OTP_SOURCE
 echo $OTP_SHA256
+cat ~/.makepkg.conf
 export OTP_SOURCE OTP_SHA256 GIT_TAG
 envsubst '$OTP_SOURCE,$OTP_SHA256,$GIT_TAG' < /home/testuser/archpkg/PKGBUILD.tmpl > /home/testuser/build/PKGBUILD
 pushd /home/testuser/build
