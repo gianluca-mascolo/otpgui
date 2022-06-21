@@ -12,7 +12,11 @@ services:
     volumes:
       - type: bind
         source: $PWD/dist
-        target: /opt/dist
+        target: /home/testuser/dist
+        read_only: true
+      - type: bind
+        source: $PWD/debian
+        target: /home/testuser/debian
         read_only: true
       - type: bind
         source: $PWD/.test-otp.yml
