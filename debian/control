@@ -1,0 +1,19 @@
+Source: otpgui
+Section: unknown
+Priority: optional
+Maintainer: Gianluca mascolo <gianluca@gurutech.it>
+Build-Depends: debhelper-compat (= 13), dh-python, python3-setuptools, python3-all
+Standards-Version: 4.6.0
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/otpgui
+#Vcs-Git: https://salsa.debian.org/debian/otpgui.git
+#Testsuite: autopkgtest-pkg-python
+Rules-Requires-Root: no
+
+Package: python3-otpgui
+Architecture: all
+Depends: python3-gi, python3-pyotp, python3-yaml, python3:any, gir1.2-gtk-3.0
+Description: <insert up to 60 chars description> (Python 3)
+  <insert long description, indented with spaces>
+  .
+  This package installs the library for Python 3.
