@@ -7,6 +7,7 @@ services:
       args:
         DEBIAN_FRONTEND: noninteractive
         TZ: Europe/Rome
+        USER_UID: $USER_UID
     environment:
       DISPLAY: ":0.0"
     volumes:
@@ -30,6 +31,18 @@ services:
         source: $HOME/.Xauthority
         target: /home/testuser/.Xauthority
         read_only: false
+      - type: bind
+        source: $PWD/debbuild
+        target: /home/testuser/build
+        read_only: false
+      - type: bind
+        source: $PWD/
+        target: /home/testuser/gitsrc
+        read_only: true
+      - type: bind
+        source: $PWD/debpkg
+        target: /home/testuser/debpkg
+        read_only: true
   archpy:
     image: archpy
     build:

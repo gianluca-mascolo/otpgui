@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
     otpgui.py is an OTP generator compatible with TOTP.
     Copyright (C) 2018 Gianluca Mascolo <gianluca@gurutech.it>

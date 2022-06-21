@@ -1,14 +1,21 @@
 FROM ubuntu:20.04
 ARG TZ
 ARG DEBIAN_FRONTEND
+ARG USER_UID
 RUN apt-get update && \
-    apt-get -y install sudo python3 python3-pip pkg-config libcairo2 libcairo2-dev libgirepository1.0-dev libgtk-3-dev build-essential devscripts debhelper dh-python python3-setuptools python3-all && \
+    apt-get -y install \
+        sudo \
+        build-essential \
+        devscripts \
+        debhelper \
+        dh-python \
+        python3-setuptools \
+        python3-all && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    groupadd -g 1000 testgroup && \
-    useradd -g 1000 -d /home/testuser -m -u 1000 -s /bin/bash testuser && \
+    useradd -g users -d /home/testuser -m -u $USER_UID -s /bin/bash testuser && \
     mkdir -p /home/testuser/.local/bin && \
-    chown -R testuser:testgroup /home/testuser/.local && \
+    chown -R testuser:users /home/testuser/.local && \
     echo "testuser ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/testuser
 ENV PATH=/home/testuser/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 USER testuser
