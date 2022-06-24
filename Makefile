@@ -10,3 +10,8 @@ arch-pkg:
 	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)
 arch-install:
 	docker-compose run --rm archpy /home/testuser/archpkg/install-pkg.sh $(PKGVER)
+python-clean:
+	rm -f dist/otpgui*
+	rm -f build/python/artifacts/otpgui*
+python-build:
+	./build/python/scripts/build.sh $(PKGVER)
