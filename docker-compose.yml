@@ -12,12 +12,8 @@ services:
       DISPLAY: ":0.0"
     volumes:
       - type: bind
-        source: $PWD/dist
-        target: /home/testuser/dist
-        read_only: true
-      - type: bind
-        source: $PWD/debian
-        target: /home/testuser/debian
+        source: $PWD/build/deb/templates/
+        target: /home/testuser/templates
         read_only: true
       - type: bind
         source: $PWD/.test-otp.yml
@@ -32,16 +28,16 @@ services:
         target: /home/testuser/.Xauthority
         read_only: false
       - type: bind
-        source: $PWD/debbuild
-        target: /home/testuser/build
+        source: $PWD/build/deb/artifacts/
+        target: /home/testuser/artifacts
         read_only: false
       - type: bind
         source: $PWD/
         target: /home/testuser/gitsrc
         read_only: true
       - type: bind
-        source: $PWD/debpkg
-        target: /home/testuser/debpkg
+        source: $PWD/build/deb/scripts/
+        target: /home/testuser/scripts
         read_only: true
   archpy:
     image: archpy
