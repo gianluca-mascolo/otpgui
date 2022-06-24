@@ -6,3 +6,4 @@ archbuild/
 dist/
 .env
 debbuild/
+**/artifacts/
