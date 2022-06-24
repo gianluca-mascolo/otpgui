@@ -17,5 +17,6 @@ python-build:
 	./build/python/scripts/build.sh $(PKGVER)
 deb-clean:
 	rm -rf build/deb/artifacts/otpgui*
+	rm -f build/deb/artifacts/python3-otpgui*
 deb-pkg:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/create-pkg.sh $(PKGVER)
