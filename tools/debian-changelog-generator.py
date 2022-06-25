@@ -14,7 +14,7 @@ def GetTagDate(GitTag):
 ChangeStart=re.compile(r"^<!-- changelog start -->$")
 ChangeEnd=re.compile(r"^<!-- changelog end -->$")
 ChangeTag=re.compile(r"^## <!-- release tag -->\[([0-9]+\.[0-9]+\.[0-9]+)\]")
-ChangeLine=re.compile(r"^<!-- change line -->- (.*)$")
+ChangeLine=re.compile(r"^- (.*)<!-- change line -->$")
 ProcessLine=False
 GitTag=None
 ## <!-- release tag -->
