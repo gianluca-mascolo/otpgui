@@ -30,13 +30,14 @@ DevChangeLog=f"""otpgui (0.0.0-1) UNRELEASED; urgency=medium
  -- Gianluca mascolo <gianluca@gurutech.it>  {GetTagDate('0.0.0')}"""
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-c","--changelog", help="Path to CHANGELOG.md", type=str,default="CHANGELOG.md")
 parser.add_argument("-d","--dev", help="Development Changelog",action="store_true")
 args = parser.parse_args()
 
 if args.dev:
     print(f"{DevChangeLog}")
 else:
-    with open("CHANGELOG.md") as cl:
+    with open(args.changelog) as cl:
         lines = cl.readlines()
         for line in lines:
             if ChangeStart.match(line):
