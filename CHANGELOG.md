@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- changelog start -->
 ## <!-- release tag -->[0.2.1] - 2022-06-20
 ### Changed
-<!-- change line -->- Support writing configuration options to a file in ~/.config/otpgui
-<!-- change line -->- Add desktop menu entry
-<!-- change line -->- Add icons to menu
+- Support writing configuration options to a file in ~/.config/otpgui<!-- change line -->
+- Add desktop menu entry<!-- change line -->
+- Add icons to menu<!-- change line -->
 
 ## <!-- release tag -->[0.1.0] - 2022-06-07
 ### Changed
-<!-- change line -->- First release, support install package with pip
+- First release, support install package with pip<!-- change line -->
 <!-- changelog end -->
