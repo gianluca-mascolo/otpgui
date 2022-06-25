@@ -14,8 +14,9 @@ The configuration file is a yaml file with this information:
 - the string that generate the otp code
 
 Because the generator string is a sensitive data, it must be encrypted in the configuration file with [sops](https://github.com/mozilla/sops).
+<!-- This is commented out. -->
 
-## Encryption
+## <!-- mark -->Encryption<!-- down -->
 To create a new `otp.yml` configuration file:
 - create a new directory, e.g. `mkdir ~/otp`
 - copy the `sops-example.yml` into `~/otp/.sops.yaml`.
