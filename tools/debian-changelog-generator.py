@@ -10,7 +10,6 @@ def GetTagDate(GitTag):
         GitLogDate=subprocess.run(["git","show","--format=%aI","-s",f"{GitTag}^{{commit}}"],capture_output=True,universal_newlines=True,check=True)
         LogDate=GitLogDate.stdout.strip()
         LogDateIso=datetime.fromisoformat(LogDate)
-        #print(f"D: {LogDateIso.strftime(debfmt) }")
         return LogDateIso.strftime(DebianFormat)
     else:
         LogDate=datetime.now()
