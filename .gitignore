@@ -7,3 +7,4 @@ dist/
 .env
 debbuild/
 **/artifacts/
+build/deb/debian/changelog
