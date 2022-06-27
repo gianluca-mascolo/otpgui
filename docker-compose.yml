@@ -7,12 +7,13 @@ services:
       args:
         DEBIAN_FRONTEND: noninteractive
         TZ: Europe/Rome
+        USER_UID: $USER_UID
     environment:
       DISPLAY: ":0.0"
     volumes:
       - type: bind
-        source: $PWD/dist
-        target: /opt/dist
+        source: $PWD/build/deb/debian/
+        target: /home/testuser/debian
         read_only: true
       - type: bind
         source: $PWD/.test-otp.yml
@@ -26,6 +27,18 @@ services:
         source: $HOME/.Xauthority
         target: /home/testuser/.Xauthority
         read_only: false
+      - type: bind
+        source: $PWD/build/deb/artifacts/
+        target: /home/testuser/artifacts
+        read_only: false
+      - type: bind
+        source: $PWD/
+        target: /home/testuser/gitsrc
+        read_only: true
+      - type: bind
+        source: $PWD/build/deb/scripts/
+        target: /home/testuser/scripts
+        read_only: true
   archpy:
     image: archpy
     build:

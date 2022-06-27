@@ -1,0 +1,21 @@
+Source: otpgui
+Section: contrib/utils
+Priority: optional
+Maintainer: Gianluca mascolo <gianluca@gurutech.it>
+Build-Depends: debhelper (>= 12~), dh-python, python3-setuptools, python3-all
+Standards-Version: 4.5.0
+Homepage: https://github.com/gianluca-mascolo/otpgui
+Vcs-Browser: https://github.com/gianluca-mascolo/otpgui
+Vcs-Git: https://github.com/gianluca-mascolo/otpgui.git
+Rules-Requires-Root: no
+
+Package: python3-otpgui
+Architecture: all
+Suggests: sops
+Depends: python3-gi, python3-pyotp, python3-yaml, python3:any, gir1.2-gtk-3.0, hicolor-icon-theme, ${misc:Depends}
+Description: Provides an OTP generator compatible with totp.
+ The package python3-otpgui provides a graphical application that display
+ TOTP codes for two-factor-authentication (2FA). Secrets to generate codes
+ are stored in a YAML file (optionally encrypted by sops)
+ .
+ This package installs the library for Python 3.

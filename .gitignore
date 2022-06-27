@@ -5,3 +5,5 @@ __pycache__/
 archbuild/
 dist/
 .env
+**/artifacts/
+build/deb/debian/changelog
