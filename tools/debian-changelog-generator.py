@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from datetime import datetime
+from datetime import timezone 
 import subprocess
 import re
 import argparse
@@ -12,7 +13,7 @@ def GetTagDate(GitTag):
         LogDateIso=datetime.fromisoformat(LogDate)
         return LogDateIso.strftime(DebianFormat)
     else:
-        LogDate=datetime.now()
+        LogDate=datetime.now(timezone.utc)
         return LogDate.strftime(DebianFormat)
 
 ChangeStart=re.compile(r"^<!-- changelog start -->$")

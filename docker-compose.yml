@@ -12,8 +12,8 @@ services:
       DISPLAY: ":0.0"
     volumes:
       - type: bind
-        source: $PWD/build/deb/templates/
-        target: /home/testuser/templates
+        source: $PWD/build/deb/debian/
+        target: /home/testuser/debian
         read_only: true
       - type: bind
         source: $PWD/.test-otp.yml

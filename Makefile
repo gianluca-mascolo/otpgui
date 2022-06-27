@@ -20,3 +20,5 @@ deb-clean:
 	rm -f build/deb/artifacts/python3-otpgui*
 deb-pkg:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/create-pkg.sh $(PKGVER)
+deb-install:
+	docker-compose run --rm ubuntupy /home/testuser/scripts/install-pkg.sh $(PKGVER)
