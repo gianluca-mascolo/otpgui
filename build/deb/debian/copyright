@@ -1,11 +1,10 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: otpgui
-Upstream-Contact: <preferred name and address to reach the upstream project>
-Source: <url://example.com>
+Upstream-Contact: gianluca@gurutech.it 
+Source: https://github.com/gianluca-mascolo/otpgui
 
 Files: *
-Copyright: <years> <put author's name and email here>
-           <years> <likewise for another author>
+Copyright: 2022 Gianluca Mascolo <gianluca@gurutech.it>
 License: GPL-3.0+
 
 Files: debian/*
