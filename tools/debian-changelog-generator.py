@@ -27,7 +27,7 @@ DevChangeLog=f"""otpgui (0.0.0-1) UNRELEASED; urgency=medium
 
   * Development version
 
- -- Gianluca mascolo <gianluca@gurutech.it>  {GetTagDate('0.0.0')}"""
+ -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate('0.0.0')}"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c","--changelog", help="Path to CHANGELOG.md", type=str,default="CHANGELOG.md")
@@ -44,11 +44,11 @@ else:
                 ProcessLine=True
             if ChangeEnd.match(line):
                 ProcessLine=False
-                print(f"\n -- Gianluca mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}")
+                print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}")
             if ProcessLine:
                 if ChangeTag.match(line):
                     if GitTag:
-                        print(f"\n -- Gianluca mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}\n")
+                        print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}\n")
                     GitTagSearch = ChangeTag.search(line)
                     GitTag=GitTagSearch.group(1)
                     print(f"otpgui ({GitTag}-1) unstable; urgency=medium\n")
