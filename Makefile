@@ -23,3 +23,5 @@ deb-pkg:
 deb-install:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/install-pkg.sh $(PKGVER)
 python: python-clean python-build
+deb: deb-clean deb-pkg deb-install
+arch: arch-clean arch-pkg arch-install
