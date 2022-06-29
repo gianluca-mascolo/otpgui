@@ -4,12 +4,25 @@ from datetime import timezone
 import subprocess
 import re
 import argparse
+import requests
+import os
 
-def GetTagDate(GitTag):
+def GetTagDate(GitTag,GitMethod):
     DebianFormat=r"%a, %d %b %Y %H:%M:%S %z"
     if GitTag != "0.0.0":
-        GitLogDate=subprocess.run(["git","show","--format=%aI","-s",f"{GitTag}^{{commit}}"],capture_output=True,universal_newlines=True,check=True)
-        LogDate=GitLogDate.stdout.strip()
+        if GitMethod == 'cli':
+            GitLogDate=subprocess.run(["git","show","--format=%aI","-s",f"{GitTag}^{{commit}}"],capture_output=True,universal_newlines=True,check=True)
+            LogDate=GitLogDate.stdout.strip()
+        elif GitMethod == 'api':
+            GithubToken = os.environ['GITHUB_TOKEN']
+            h = {"Accept": "application/vnd.github.v3+json","Authorization": f"token {GithubToken}"}
+            r = requests.get(f"https://api.github.com/repos/gianluca-mascolo/otpgui/git/refs/tags/{GitTag}",headers=h)
+            ObjectUrl=r.json()['object']['url']
+            r = requests.get(ObjectUrl,headers=h)
+            TagInfo = r.json().get('author')
+            if TagInfo == None:
+                TagInfo = r.json().get('tagger')
+            LogDate=re.sub('Z$', '+00:00', TagInfo['date'])
         LogDateIso=datetime.fromisoformat(LogDate)
         return LogDateIso.strftime(DebianFormat)
     else:
@@ -27,10 +40,11 @@ DevChangeLog=f"""otpgui (0.0.0-1) UNRELEASED; urgency=medium
 
   * Development version
 
- -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate('0.0.0')}"""
+ -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate('0.0.0','cli')}"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c","--changelog", help="Path to CHANGELOG.md", type=str,default="CHANGELOG.md")
+parser.add_argument("-m","--method", help="Method to retrieve git tags",choices=["cli", "api"], type=str,default="cli")
 parser.add_argument("-d","--dev", help="Development Changelog",action="store_true")
 args = parser.parse_args()
 
@@ -44,11 +58,11 @@ else:
                 ProcessLine=True
             if ChangeEnd.match(line):
                 ProcessLine=False
-                print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}")
+                print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag,args.method)}")
             if ProcessLine:
                 if ChangeTag.match(line):
                     if GitTag:
-                        print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag)}\n")
+                        print(f"\n -- Gianluca Mascolo <gianluca@gurutech.it>  {GetTagDate(GitTag,args.method)}\n")
                     GitTagSearch = ChangeTag.search(line)
                     GitTag=GitTagSearch.group(1)
                     print(f"otpgui ({GitTag}-1) unstable; urgency=medium\n")

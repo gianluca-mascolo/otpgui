@@ -10,6 +10,7 @@ services:
         USER_UID: $USER_UID
     environment:
       DISPLAY: ":0.0"
+      GITHUB_TOKEN: $GITHUB_TOKEN
     volumes:
       - type: bind
         source: $PWD/build/deb/debian/

@@ -3,8 +3,8 @@ set -eu
 set -o pipefail
 GIT_TAG="$1"
 if ( [ "$GIT_TAG" = "dev" ] ); then GIT_TAG="0.0.0"; CHANGELOG_FLAG="-d"; else CHANGELOG_FLAG=""; fi
+[ -z ${GITHUB_TOKEN:+is_null} ] || CHANGELOG_FLAG="$CHANGELOG_FLAG -m api"
 export GIT_TAG
-
 pushd ~/artifacts
   tar xzf ~/gitsrc/build/python/artifacts/otpgui-${GIT_TAG}.tar.gz
   pushd otpgui-${GIT_TAG}
