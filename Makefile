@@ -22,3 +22,4 @@ deb-pkg:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/create-pkg.sh $(PKGVER)
 deb-install:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/install-pkg.sh $(PKGVER)
+python: python-clean python-build
