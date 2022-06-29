@@ -1,10 +1,10 @@
 PKGVER:=$(GIT_TAG)
 arch-clean:
-	rm -rf archbuild/pkg
-	rm -rf archbuild/src
-	rm -rf archbuild/otpgui*
-	rm -f archbuild/*
-	rm -f archbuild/.SRCINFO
+	rm -rf build/arch/artifacts/pkg
+	rm -rf build/arch/artifacts/src
+	rm -rf build/arch/artifacts/otpgui*
+	rm -f build/arch/artifacts/*
+	rm -f build/arch/artifacts/.SRCINFO
 	docker-compose down
 arch-pkg:
 	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)

@@ -23,8 +23,8 @@ echo $OTP_SOURCE
 echo $OTP_SHA256
 export OTP_SOURCE OTP_SHA256 GIT_TAG
 
-envsubst '$OTP_SOURCE,$OTP_SHA256,$GIT_TAG' < /home/testuser/archpkg/PKGBUILD.tmpl > /home/testuser/build/PKGBUILD
-pushd /home/testuser/build
+envsubst '$OTP_SOURCE,$OTP_SHA256,$GIT_TAG' < ~/gitsrc/build/arch/PKGBUILD.tmpl > ~/artifacts/PKGBUILD
+pushd ~/artifacts
 sudo pacman -Sy --noconfirm --noprogressbar
 makepkg -s --noconfirm --noprogressbar
 makepkg --printsrcinfo > .SRCINFO

@@ -18,5 +18,6 @@ pushd ~/artifacts
     popd
     debuild -us -uc
   popd
+  echo "*** PACKAGE INFORMATION ***"
   dpkg-deb -I "python3-otpgui_${GIT_TAG}-1_all.deb"
 popd
