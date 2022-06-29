@@ -7,9 +7,9 @@ arch-clean:
 	rm -f build/arch/artifacts/.SRCINFO
 	docker-compose down
 arch-pkg:
-	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)
+	docker-compose run --rm archpy /home/testuser/scripts/create-pkg.sh $(PKGVER)
 arch-install:
-	docker-compose run --rm archpy /home/testuser/archpkg/install-pkg.sh $(PKGVER)
+	docker-compose run --rm archpy /home/testuser/scripts/install-pkg.sh $(PKGVER)
 python-clean:
 	rm -f dist/otpgui*
 	rm -f build/python/artifacts/otpgui*
