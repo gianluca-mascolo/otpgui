@@ -1,15 +1,15 @@
 PKGVER:=$(GIT_TAG)
 arch-clean:
-	rm -rf archbuild/pkg
-	rm -rf archbuild/src
-	rm -rf archbuild/otpgui*
-	rm -f archbuild/*
-	rm -f archbuild/.SRCINFO
+	rm -rf build/arch/artifacts/pkg
+	rm -rf build/arch/artifacts/src
+	rm -rf build/arch/artifacts/otpgui*
+	rm -f build/arch/artifacts/*
+	rm -f build/arch/artifacts/.SRCINFO
 	docker-compose down
 arch-pkg:
-	docker-compose run --rm archpy /home/testuser/archpkg/create-pkg.sh $(PKGVER)
+	docker-compose run --rm archpy /home/testuser/scripts/create-pkg.sh $(PKGVER)
 arch-install:
-	docker-compose run --rm archpy /home/testuser/archpkg/install-pkg.sh $(PKGVER)
+	docker-compose run --rm archpy /home/testuser/scripts/install-pkg.sh $(PKGVER)
 python-clean:
 	rm -f dist/otpgui*
 	rm -f build/python/artifacts/otpgui*
@@ -22,3 +22,6 @@ deb-pkg:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/create-pkg.sh $(PKGVER)
 deb-install:
 	docker-compose run --rm ubuntupy /home/testuser/scripts/install-pkg.sh $(PKGVER)
+python: python-clean python-build
+deb: deb-clean deb-pkg deb-install
+arch: arch-clean arch-pkg arch-install

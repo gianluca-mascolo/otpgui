@@ -16,10 +16,6 @@ services:
         target: /home/testuser/debian
         read_only: true
       - type: bind
-        source: $PWD/.test-otp.yml
-        target: /home/testuser/otp.yml
-        read_only: true
-      - type: bind
         source: /tmp/.X11-unix
         target: /tmp/.X11-unix
         read_only: true
@@ -51,20 +47,12 @@ services:
       DISPLAY: ":0.0"
     volumes:
       - type: bind
-        source: $PWD/dist
-        target: /opt/dist
+        source: $PWD/build/arch/scripts/
+        target: /home/testuser/scripts
         read_only: true
       - type: bind
-        source: $PWD/.test-otp.yml
-        target: /home/testuser/otp.yml
-        read_only: true
-      - type: bind
-        source: $PWD/archpkg
-        target: /home/testuser/archpkg
-        read_only: true
-      - type: bind
-        source: $PWD/archbuild
-        target: /home/testuser/build
+        source: $PWD/build/arch/artifacts/
+        target: /home/testuser/artifacts
         read_only: false
       - type: bind
         source: $PWD/

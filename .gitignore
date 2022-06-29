@@ -2,7 +2,6 @@ virtualenv/
 .pytest_cache/
 __pycache__/
 .venv/
-archbuild/
 dist/
 .env
 **/artifacts/
