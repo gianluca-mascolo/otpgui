@@ -6,8 +6,11 @@ An OTP generator compatible with totp written in python.
 **otpgui** provides a graphical application for GNU/Linux that display TOTP codes for two-factor-authentication (2FA). It can be used as a replacement or companion for mobile apps like Google Authenticator or Microsoft Autenticator.
 
 <p align="center">
+
 ![otpgui](https://user-images.githubusercontent.com/20320073/41290428-1fe3d8ba-6e4d-11e8-83c9-530ca252910e.png)
+
 *otpgui showing a one time password for gmail*
+
 </p>
 
 ## Installation
