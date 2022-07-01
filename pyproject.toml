@@ -4,12 +4,17 @@ version = "0.2.2"
 description = "Otp Generator GUI with python"
 authors = ["Gianluca Mascolo <gianluca@gurutech.it>"]
 license = "GPL-3.0-or-later"
+homepage = "https://github.com/gianluca-mascolo/otpgui/"
+repository = "https://github.com/gianluca-mascolo/otpgui/"
+readme = "README.md"
 packages = [
     { include = "otpgui.py" },
     { include = "otpversion.py" },
 ]
 classifiers = [
-    "Environment :: X11 Applications :: GTK"
+    "Environment :: X11 Applications :: GTK",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)"
 ]
 
 [tool.poetry.dependencies]
