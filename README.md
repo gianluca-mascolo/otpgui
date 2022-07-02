@@ -53,7 +53,10 @@ poetry run otpgui
 
 ## Usage
 
-Start OTP gui from your main menu. Select an otp to display from the dropdown menu. Just click the otp code to copy it into the clipboard. Paste the otp code on the website requesting it. If you stay with the mouse over the code a tooltip with additional information about that otp is displayed.
+- Start OTP gui from your main menu
+- Select an otp to display from the dropdown menu
+- Just click the otp code to copy it into the clipboard. Paste the otp code on the website requesting it
+- If you stay with the mouse over the code a tooltip with additional information about that otp is displayed.
 
 ## Configuration
 
