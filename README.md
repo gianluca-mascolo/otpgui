@@ -90,7 +90,7 @@ otp:
     name: "account pinco.pallino@hotmail.com"
     genstring: "ABCDEFGHIJKLMNOP"
 ```
-Each label will appear in the dropdown menu of otpgui. `name` is the tooltip you want to display about otp-code you are displaying, and `genstring` is the secret string used to generate the code.
+Each label will appear in the dropdown menu of otpgui. `name` is the tooltip you want to display about otp-code you are displaying and `genstring` is the secret string used to generate the code.
 
 ### Getting the otp secret strings
 
