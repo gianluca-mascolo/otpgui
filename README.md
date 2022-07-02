@@ -114,7 +114,7 @@ Don't forget to change the location of `otp.yml` in `~/.config/otpgui/settings.y
 
 ## CLI interface
 
-It is of course possible to start `otpgui` from cli. To access the help:
+It is of course possible to execute `otpgui` from cli. To access the help:
 ```
 ]$ otpgui -h
 usage: otpgui [-h] [-c CONFIG_FILE] [-e {plain,sops}] [-i {gtk,script}]
