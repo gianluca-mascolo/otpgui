@@ -45,9 +45,53 @@ Alternatively you can install it in a virtual env using [python poetry](https://
 poetry install
 poetry run otpgui
 ```
+
 ## Usage
-You can install the 
-Secrets to generate codes are stored in a YAML file (optionally encrypted by sops)
+
+Select an otp to display from the dropdown menu. Just click over the otp code to copy it into the clipboard. Paste the otp code on the website requesting it. If you stay with the mouse over the code a tooltip with additional information about that otp is displayed.
+
+## Configuration
+
+### General settings
+
+Configuration file is stored into your home directory ~/.config/otpgui/settings.yml. Example:
+```
+config_file: /home/testuser/.config/otpgui/otp.yml
+encryption_method: plain
+```
+| Setting             | Default                  | Description |
+| ------------------- | ------------------------ | ----------- |
+| `config_file`       | `~/.config/otpgui/otp.yml` | File where otp code secrets are stored | 
+| `encryption_method` | `plain`                    | Encryption method for otp secrets store file (`plain` or `sops`) |
+
+### Otp secrets file
+
+The otp secrets file is a simple yaml file structured like the following example:
+```yaml
+otp:
+  label1:
+    name: "description for label1"
+    genstring: "ABCDEFGHIJKLMNOP"
+  label2:
+    name: "description for label2"
+    genstring: "ABCDEFGHIJKLMNOP"
+  gmail:
+    name: "account foo.bar@gmail.com"
+    genstring: "ABCDEFGHIJKLMNOP"
+  amazon:
+    name: "account pinco.pallino@hotmail.com"
+    genstring: "ABCDEFGHIJKLMNOP"
+```
+Each label will appear in the dropdown menu of otpgui. `name` is the tooltip you want to display about otp-code you are displaying, and `genstring` is the secret string used to generate the code.
+
+### Getting the otp secret strings
+
+If you are configuring a new service with 2FA, when the website shows up the QR-code to scan there is usually a link that will reveal you the secret string (e.g. click on _"I can't scan QR code"_ or similar under the QR-code you see on the screen).
+
+If you already have OTP codes installed on your mobile phone, some applications allow you to show the QR code that generated the code. If this is your case you can use a QR-code scanner for desktop  (e.g. `zbarcam-gtk`) to read it and paste the code into `otp.yml`. Anyway if your mobile app does not allow you to show the QR code for a specific otp, a general solution it to authenticate to the website requiring 2FA using your mobile phone, removing 2FA authentication and applying it again, regenerating the QR-code so you can keep it both in mobile phone and otpgui.
+
+<!--
+### Encryption
 
 
 ## Requirements:
@@ -63,9 +107,8 @@ The configuration file is a yaml file with this information:
 - the string that generate the otp code
 
 Because the generator string is a sensitive data, it must be encrypted in the configuration file with [sops](https://github.com/mozilla/sops).
-<!-- This is commented out. -->
 
-## <!-- mark -->Encryption<!-- down -->
+## Encryption
 To create a new `otp.yml` configuration file:
 - create a new directory, e.g. `mkdir ~/otp`
 - copy the `sops-example.yml` into `~/otp/.sops.yaml`.
@@ -80,3 +123,4 @@ You can:
 - select the label for the otp you want to generate
 - stay with mouse over the otpcode to see a secret tooltip
 - click the otp code to copy it to the clipboard
+-->
