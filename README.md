@@ -17,7 +17,7 @@ An OTP generator compatible with totp written in python.
 
 ### Debian and Ubuntu
 
-Download the deb package from [release](https://github.com/gianluca-mascolo/otpgui/releases/tag/0.2.2) page. Double click on the package or use
+Download the deb package from [release](https://github.com/gianluca-mascolo/otpgui/releases/latest) page. Double click on the package or use
 ```
 sudo apt install ./python3-otpgui_*_all.deb
 ```
@@ -28,7 +28,7 @@ from the command line.
 
 ### Arch Linux
 
-Download the zst package from [release](https://github.com/gianluca-mascolo/otpgui/releases/tag/0.2.2) page. Install with
+Download the zst package from [release](https://github.com/gianluca-mascolo/otpgui/releases/latest) page. Install with
 ```
 sudo pacman -U ./otpgui-*-any.pkg.tar.zst 
 ```
@@ -36,7 +36,7 @@ Alternatively you can build it yourself from [AUR](https://aur.archlinux.org/pac
 
 ### Other Distributions
 
-otpgui should work with any distro with a recent version of python 3.7+ and gtk3. You can try installing the pip wheel from [release](https://github.com/gianluca-mascolo/otpgui/releases/tag/0.2.2) page. pip installation require development packages for python, gobject and cairo (e.g. on debian like distros: `apt install python3-pip pkg-config libgirepository1.0-dev libcairo2-dev gir1.2-gtk-3.0`)
+otpgui should work with any distro with a recent version of python 3.7+ and gtk3. You can try installing the pip wheel from [release](https://github.com/gianluca-mascolo/otpgui/releases/latest) page. pip installation require development packages for python, gobject and cairo (e.g. on debian like distros: `apt install python3-pip pkg-config libgirepository1.0-dev libcairo2-dev gir1.2-gtk-3.0`)
 ```
 pip install --user ./otpgui-*-py3-none-any.whl
 ```
