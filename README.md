@@ -62,14 +62,14 @@ poetry run otpgui
 
 ### General settings
 
-Configuration file is stored into your home directory ~/.config/otpgui/settings.yml. Example:
+Configuration file is stored into your home directory `~/.config/otpgui/settings.yml`. Example:
 ```
 config_file: /home/testuser/.config/otpgui/otp.yml
 encryption_method: plain
 ```
 | Setting             | Default                  | Description |
 | ------------------- | ------------------------ | ----------- |
-| `config_file`       | `~/.config/otpgui/otp.yml` | File where otp code secrets are stored | 
+| `config_file`       | `~/.config/otpgui/otp.yml` | File where otp secret codes are stored | 
 | `encryption_method` | `plain`                    | Encryption method for otp secrets store file (`plain` or `sops`) |
 
 ### Otp secrets file
