@@ -137,7 +137,7 @@ options:
 Any parameter that you specify in the command line will take precedence over configuration stored in `~/.config/otpgui/settings.yml`.
 
 ### Scripted mode
-There is a `script` mode you can use in your shell scripts, e.g.
+There is a scripted mode you can use in your shell scripts, e.g.
 ```
 ]$ otpgui -i script -l amznit
 OTP_LABEL=amznit
