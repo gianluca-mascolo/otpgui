@@ -6,3 +6,4 @@ dist/
 .env
 **/artifacts/
 build/deb/debian/changelog
+notes.txt
