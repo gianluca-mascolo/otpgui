@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkListStore" id="otp_labelstore"/>
+  <object class="GtkWindow" id="otp_window">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">OTP</property>
+    <signal name="destroy" handler="on_otp_window_destroy" swapped="no"/>
+    <child>
+      <object class="GtkBox" id="otp_box">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkButton" id="otp_button">
+            <property name="label" translatable="yes">button</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="has-tooltip">True</property>
+            <signal name="clicked" handler="on_otp_button_clicked" swapped="no"/>
+            <signal name="query-tooltip" handler="on_otp_button_query_tooltip" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="otp_progressbar">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="otp_combo">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <signal name="changed" handler="on_otp_combo_changed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
