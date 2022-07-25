@@ -7,3 +7,4 @@ dist/
 **/artifacts/
 build/deb/debian/changelog
 notes.txt
+otpgui.glade~
