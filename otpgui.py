@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
     otpgui.py is an OTP generator compatible with TOTP.
-    Copyright (C) 2018 Gianluca Mascolo <gianluca@gurutech.it>
+    Copyright (C) 2018-2022 Gianluca Mascolo <gianluca@gurutech.it>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
