@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "otpgui"
-version = "0.2.4"
+version = "0.2.5"
 description = "Otp Generator GUI with python"
 readme = "README.md"
 requires-python = ">=3.12"

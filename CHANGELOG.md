@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <!-- changelog start -->
+## <!-- release tag -->[0.2.5] - 2025-12-16
+### Changed
+- Update python project to latest PEP standards<!-- change line -->
+- Update github workflows to latest ubuntu and actions<!-- change line -->
+- Minor bump version for ci build<!-- change line -->
+
 ## <!-- release tag -->[0.2.4] - 2025-12-16
 ### Changed
 - Update python project to latest PEP standards<!-- change line -->
