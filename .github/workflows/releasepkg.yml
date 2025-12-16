@@ -20,13 +20,17 @@ jobs:
         run: GIT_TAG=${GITHUB_REF##refs/tags/} make python
       - name: Install dependencies
         run: poetry build -f wheel
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
       - name: Setup Docker
         run: |
           touch /tmp/.X11-unix
           touch ~/.Xauthority
           echo "USER_UID=$(id -u)" > .env
-          docker-compose build archpy
-          docker-compose build ubuntupy
+          docker compose build archpy
+          docker compose build ubuntupy
       - name: Build Arch Artifact
         run: |
           GIT_TAG=${GITHUB_REF##refs/tags/} make arch
