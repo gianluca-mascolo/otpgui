@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 ARG TZ
 ARG DEBIAN_FRONTEND
 ARG USER_UID
-RUN apt-get update && \
+RUN add-apt-repository universe && apt-get update && \
     apt-get -y install \
         sudo \
         build-essential \
