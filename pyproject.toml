@@ -1,34 +1,86 @@
-[tool.poetry]
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
 name = "otpgui"
 version = "0.2.3"
 description = "Otp Generator GUI with python"
-authors = ["Gianluca Mascolo <gianluca@gurutech.it>"]
-license = "GPL-3.0-or-later"
-homepage = "https://github.com/gianluca-mascolo/otpgui/"
-repository = "https://github.com/gianluca-mascolo/otpgui/"
 readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-or-later"
+authors = [
+    {name = "Gianluca Mascolo", email = "gianluca@gurutech.it"}
+]
+maintainers = [
+    {name = "Gianluca Mascolo", email = "gianluca@gurutech.it"}
+]
+keywords = ["otp"]
+dependencies = [
+    "PyYAML>=6.0",
+    "pyotp>=2.6",
+    "PyGObject>=3.42",
+    "pycairo==1.29.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/gianluca-mascolo/otpgui/"
+Repository = "https://github.com/gianluca-mascolo/otpgui/"
+Documentation = "https://github.com/gianluca-mascolo/otpgui/blob/main/README.md"
+"Bug Tracker" = "https://github.com/gianluca-mascolo/otpgui/issues"
+
+[project.scripts]
+otpgui = "otpgui:main"
+
+[tool.poetry]
 packages = [
     { include = "otpgui.py" },
     { include = "otpversion.py" },
 ]
-classifiers = [
-    "Environment :: X11 Applications :: GTK",
-    "Operating System :: POSIX :: Linux",
-    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)"
-]
 
 [tool.poetry.dependencies]
-python = "^3.7"
 PyYAML = "^6.0"
 pyotp = "^2.6.0"
 PyGObject = "^3.42.1"
+pycairo = "1.29.0"
 
-[tool.poetry.dev-dependencies]
-pytest = "^7.1.2"
+[project.optional-dependencies]
+dev = [
+    "black>=23.1.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "pytest>=7.2.2",
+]
 
-[tool.poetry.scripts]
-otpgui = "otpgui:main"
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+pytest = "^7.2.2"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+# Tool configurations
+[tool.black]
+line-length = 200
+target-version = ['py39', 'py310', 'py311', 'py312']
+extend-exclude = '''
+/(
+  old
+  | \.git
+  | \.mypy_cache
+  | \.pytest_cache
+  | __pycache__
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 200
+multi_line_output = 7
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip = [".gitignore", ".venv", "old"]
