@@ -20,7 +20,7 @@ dependencies = [
     "PyYAML>=6.0",
     "pyotp>=2.6",
     "PyGObject>=3.42",
-    "pycairo==1.29.0"
+    "pycairo>=1.25,<2.0"
 ]
 
 [project.urls]
@@ -34,16 +34,9 @@ otpgui = "otpgui:main"
 
 [tool.poetry]
 packages = [
-    { include = "otpgui.py" },
-    { include = "otpversion.py" },
+	{ include = "otpgui.py" },
+	{ include = "otpversion.py" },
 ]
-
-[tool.poetry.dependencies]
-python = ">=3.12,<4.0"
-PyYAML = "^6.0"
-pyotp = "^2.6.0"
-PyGObject = "^3.42.1"
-pycairo = "1.29.0"
 
 [project.optional-dependencies]
 dev = [
@@ -52,12 +45,6 @@ dev = [
     "flake8>=6.0.0",
     "pytest>=7.2.2",
 ]
-
-[tool.poetry.group.dev.dependencies]
-black = "^23.1.0"
-isort = "^5.12.0"
-flake8 = "^6.0.0"
-pytest = "^7.2.2"
 
 # Tool configurations
 [tool.black]
