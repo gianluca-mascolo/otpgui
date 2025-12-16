@@ -5,7 +5,7 @@ arch-clean:
 	rm -rf build/arch/artifacts/otpgui*
 	rm -f build/arch/artifacts/*
 	rm -f build/arch/artifacts/.SRCINFO
-	docker-compose down
+	docker compose down
 arch-pkg:
 	docker compose run --rm archpy /home/testuser/scripts/create-pkg.sh $(PKGVER)
 arch-install:
