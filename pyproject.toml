@@ -7,7 +7,7 @@ name = "otpgui"
 version = "0.2.4"
 description = "Otp Generator GUI with python"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = "GPL-3.0-or-later"
 authors = [
     {name = "Gianluca Mascolo", email = "gianluca@gurutech.it"}
