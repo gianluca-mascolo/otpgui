@@ -2,8 +2,8 @@ Source: otpgui
 Section: contrib/utils
 Priority: optional
 Maintainer: Gianluca mascolo <gianluca@gurutech.it>
-Build-Depends: debhelper (>= 12~), dh-python, python3-setuptools, python3-all
-Standards-Version: 4.5.0
+Build-Depends: debhelper-compat (= 13), dh-python, python3-setuptools, python3-all,  python3-poetry-core, pybuild-plugin-pyproject
+Standards-Version: 4.6.2
 Homepage: https://github.com/gianluca-mascolo/otpgui
 Vcs-Browser: https://github.com/gianluca-mascolo/otpgui
 Vcs-Git: https://github.com/gianluca-mascolo/otpgui.git

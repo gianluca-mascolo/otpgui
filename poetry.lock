@@ -388,5 +388,5 @@ dev = ["black", "flake8", "isort", "pytest"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.12"
-content-hash = "df373812c95817ea8d74cd37faa78498ba10cdc0669ee56851fb9710860fcc7f"
+python-versions = ">=3.12,<4.0"
+content-hash = "3cda8d652e518d965a1eaadccf77501ccb9a5c6ba86428531cc41024e2a87a68"

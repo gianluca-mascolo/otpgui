@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
@@ -39,6 +39,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+python = ">=3.12,<4.0"
 PyYAML = "^6.0"
 pyotp = "^2.6.0"
 PyGObject = "^3.42.1"

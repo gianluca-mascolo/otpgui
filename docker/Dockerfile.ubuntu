@@ -13,7 +13,7 @@ RUN apt-get update && \
         dh-python \
         python3-setuptools \
         python3-all
-RUN apt-get -y install pybuild-plugin-pyproject
+RUN apt-get -y install pybuild-plugin-pyproject python3-poetry-core
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -g users -d /home/testuser -m -u $USER_UID -s /bin/bash testuser && \
