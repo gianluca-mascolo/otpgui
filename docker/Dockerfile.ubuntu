@@ -2,7 +2,8 @@ FROM ubuntu:24.04
 ARG TZ
 ARG DEBIAN_FRONTEND
 ARG USER_UID
-RUN add-apt-repository universe && apt-get update && \
+RUN apt-get update && apt-get -y install software-properties-common && \
+    add-apt-repository universe && apt-get update && \
     apt-get -y install \
         sudo \
         build-essential \
