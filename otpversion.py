@@ -1,1 +1,1 @@
-program_version = '0.2.3'
+program_version = '0.2.4'
