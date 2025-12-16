@@ -2,8 +2,9 @@ FROM ubuntu:24.04
 ARG TZ
 ARG DEBIAN_FRONTEND
 ARG USER_UID
-RUN apt-get update && apt-get -y install software-properties-common && \
-    add-apt-repository universe && apt-get update && \
+RUN apt-get update && apt-get -y install software-properties-common
+RUN add-apt-repository universe
+RUN apt-get update && \
     apt-get -y install \
         sudo \
         build-essential \
@@ -11,9 +12,9 @@ RUN apt-get update && apt-get -y install software-properties-common && \
         debhelper \
         dh-python \
         python3-setuptools \
-        python3-all && \
-        pybuild-plugin-pyproject && \
-    apt-get clean && \
+        python3-all
+RUN apt-get -y install pybuild-plugin-pyproject
+RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -g users -d /home/testuser -m -u $USER_UID -s /bin/bash testuser && \
     mkdir -p /home/testuser/.local/bin && \
