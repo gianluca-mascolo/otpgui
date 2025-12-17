@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "otpgui"
-version = "0.2.5"
+version = "0.2.6"
 description = "Otp Generator GUI with python"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -33,10 +33,41 @@ Documentation = "https://github.com/gianluca-mascolo/otpgui/blob/main/README.md"
 otpgui = "otpgui:main"
 
 [tool.poetry]
+name = "otpgui"
+version = "0.2.6"
+description = "Otp Generator GUI with python"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = ["Gianluca Mascolo <gianluca@gurutech.it>"]
+maintainers = ["Gianluca Mascolo <gianluca@gurutech.it>"]
+keywords = ["otp"]
+
 packages = [
-	{ include = "otpgui.py" },
-	{ include = "otpversion.py" },
+  { include = "otpgui.py" },
+  { include = "otpversion.py" },
 ]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/gianluca-mascolo/otpgui/"
+Repository = "https://github.com/gianluca-mascolo/otpgui/"
+Documentation = "https://github.com/gianluca-mascolo/otpgui/blob/main/README.md"
+"Bug Tracker" = "https://github.com/gianluca-mascolo/otpgui/issues"
+
+[tool.poetry.scripts]
+otpgui = "otpgui:main"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+PyYAML = ">=6.0"
+pyotp = ">=2.6"
+PyGObject = ">=3.42"
+pycairo = ">=1.25,<2.0"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=23.1.0"
+isort = ">=5.12.0"
+flake8 = ">=6.0.0"
+pytest = ">=7.2.2"
 
 [project.optional-dependencies]
 dev = [
