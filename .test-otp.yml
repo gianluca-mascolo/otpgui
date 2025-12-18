@@ -2,3 +2,6 @@ otp:
   testlabel:
     name: "test name"
     genstring: "ABCDEFGHIJKLMNOP"
+  secondlabel:
+    name: "second test"
+    genstring: "PONMLKJIHGFEDCBA"
