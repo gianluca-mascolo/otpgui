@@ -1,8 +1,38 @@
-virtualenv/
-.pytest_cache/
+# Python bytecode
 __pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
 .venv/
+virtualenv/
+
+# Packaging
 dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Type checking
+.mypy_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+
+# Project specific
 .env
 **/artifacts/
 build/deb/debian/changelog
