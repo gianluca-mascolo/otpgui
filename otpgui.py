@@ -28,6 +28,12 @@ import yaml
 from otpversion import program_version
 
 
+class SopsDecryptionError(Exception):
+    """Raised when SOPS fails to decrypt the OTP secrets."""
+
+    pass
+
+
 class OtpSettings:
     def __init__(self):
         homedir = os.environ["HOME"]
@@ -76,11 +82,42 @@ class OtpStore:
         self.label = label
         self.tooltip = self.config_data[label]["name"]
 
+    def _get_sops_key_id(self):
+        """Try to read the GPG key ID from .sops.yaml in the config directory."""
+        config_dir = os.path.dirname(self.config_file)
+        sops_yaml_path = os.path.join(config_dir, ".sops.yaml")
+        if os.path.isfile(sops_yaml_path):
+            try:
+                with open(sops_yaml_path, "r") as f:
+                    sops_config = yaml.safe_load(f)
+                    for rule in sops_config.get("creation_rules", []):
+                        pgp_key = rule.get("pgp", "")
+                        if pgp_key:
+                            return f"0x{pgp_key[-16:]}"
+            except (yaml.YAMLError, KeyError, TypeError):
+                pass
+        return None
+
     def getgenerator(self):
         if self.encryption_method == "sops":
             gensel = f"['otp']['{self.label}']['genstring']"
-            gen_decrypt = subprocess.run(f'{self.sops_cmd} "{gensel}" {self.config_file}', capture_output=True, shell=True, universal_newlines=True, check=True)
-            self.genstring = gen_decrypt.stdout
+            try:
+                gen_decrypt = subprocess.run(f'{self.sops_cmd} "{gensel}" {self.config_file}', capture_output=True, shell=True, universal_newlines=True, check=True)
+                self.genstring = gen_decrypt.stdout
+            except subprocess.CalledProcessError as err:
+                error_output = err.stderr.strip() if err.stderr else "No error details available"
+                key_id = self._get_sops_key_id()
+                key_msg = f"  • You must load GPG key {key_id}\n" if key_id else ""
+                raise SopsDecryptionError(
+                    f"Failed to decrypt OTP secret for label '{self.label}'.\n\n"
+                    f"━━━ Possible causes ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                    f"{key_msg}"
+                    f"  • GPG key not loaded (run: gpg --card-status or gpg-connect-agent reloadagent /bye)\n"
+                    f"  • gpg-agent not running (run: gpg-agent --daemon)\n"
+                    f"  • Wrong GPG key configured in .sops.yaml\n\n"
+                    f"━━━ SOPS error details ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                    f"{error_output}"
+                ) from None
         elif self.encryption_method == "plain":
             self.genstring = self.config_data[self.label]["genstring"]
 
@@ -131,7 +168,27 @@ def main():
         except KeyError as err:
             print(f"Label not found\nError: {err}")
             sys.exit(1)
-    otp.getgenerator()
+    try:
+        otp.getgenerator()
+    except SopsDecryptionError as err:
+        if interface == "gtk":
+            import gi
+
+            gi.require_version("Gtk", "3.0")
+            from gi.repository import Gtk
+
+            dialog = Gtk.MessageDialog(
+                transient_for=None,
+                flags=0,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.OK,
+                text="Decryption Error",
+            )
+            dialog.format_secondary_text(str(err))
+            dialog.run()
+            dialog.destroy()
+        print(f"Error: {err}", file=sys.stderr)
+        sys.exit(1)
     if interface == "gtk":
         from gi.repository import Gtk
 

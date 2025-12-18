@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import re
+import subprocess
 import tempfile
+from unittest.mock import patch
 
 import pytest
 
-from otpgui import OtpStore
+from otpgui import OtpStore, SopsDecryptionError
 
 
 def createotp():
@@ -74,3 +76,18 @@ def test_invalid_label():
     otp = OtpStore(config_file=".test-otp.yml", encryption_method="plain")
     with pytest.raises(KeyError):
         otp.getlabel("nonexistent_label")
+
+
+def test_sops_decryption_error():
+    otp = OtpStore(config_file=".test-otp.yml", encryption_method="sops")
+    otp.getlabel("testlabel")
+    mock_error = subprocess.CalledProcessError(1, "sops", stderr="gpg: decryption failed: No secret key")
+    with patch("subprocess.run", side_effect=mock_error):
+        with pytest.raises(SopsDecryptionError) as exc_info:
+            otp.getgenerator()
+        error_msg = str(exc_info.value)
+        assert "Failed to decrypt OTP secret for label 'testlabel'" in error_msg
+        assert "Possible causes" in error_msg
+        assert "GPG key not loaded" in error_msg
+        assert "SOPS error details" in error_msg
+        assert "gpg: decryption failed: No secret key" in error_msg
