@@ -41,6 +41,20 @@ make deb
 make arch
 ```
 
+## Releasing
+
+To create a new release, update these files with the new version:
+
+1. `otpversion.py` - update `program_version`
+2. `pyproject.toml` - update version in both `[project]` and `[tool.poetry]` sections
+3. `CHANGELOG.md` - add new release section (template format, parsed by `tools/debian-changelog-generator.py`)
+
+After merging to `main`, tag and push to trigger CI release:
+```bash
+git tag X.Y.Z
+git push origin X.Y.Z
+```
+
 ## Code Style
 
 - Line length: 200 characters

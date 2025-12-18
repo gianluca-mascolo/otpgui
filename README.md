@@ -144,3 +144,19 @@ OTP_LABEL=amznit
 OTP_CODE=123456
 ```
 Look at the [example script](examples/otp-script-example.sh) to import script output into shell variables.
+
+## Creating a Release
+
+To create a new release:
+
+1. Bump the version in `otpversion.py`
+2. Bump the version in all occurrences in `pyproject.toml`
+3. Add a new release section in `CHANGELOG.md` following the existing format (this file is a template parsed by `tools/debian-changelog-generator.py` to create the DEB package)
+4. Merge changes to `main`
+5. Tag with the version number and push the tag:
+   ```
+   git tag X.Y.Z
+   git push origin X.Y.Z
+   ```
+
+The CI will automatically build and publish packages when a version tag is pushed.
