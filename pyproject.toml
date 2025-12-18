@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "otpgui"
-version = "0.2.7"
+version = "0.2.8"
 description = "Otp Generator GUI with python"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -34,7 +34,7 @@ otpgui = "otpgui:main"
 
 [tool.poetry]
 name = "otpgui"
-version = "0.2.7"
+version = "0.2.8"
 description = "Otp Generator GUI with python"
 readme = "README.md"
 license = "GPL-3.0-or-later"
