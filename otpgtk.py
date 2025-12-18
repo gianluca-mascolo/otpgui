@@ -1,8 +1,11 @@
 import gi
-from gi.repository import Gdk, GLib, Gtk
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
+
+from gi.repository import Gdk, GLib, Gtk  # noqa: E402
+
+from otpgui import SopsDecryptionError  # noqa: E402
 
 
 class MyWindow(Gtk.Window):
@@ -52,7 +55,22 @@ class MyWindow(Gtk.Window):
             model = combo.get_model()
             SelectedLabel = model[tree_iter][0]
             self.otp.getlabel(SelectedLabel)
-            self.otp.getgenerator()
+            try:
+                self.otp.getgenerator()
+            except SopsDecryptionError as err:
+                self.show_error_dialog("Decryption Error", str(err))
+
+    def show_error_dialog(self, title, message):
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.OK,
+            text=title,
+        )
+        dialog.format_secondary_text(message)
+        dialog.run()
+        dialog.destroy()
 
     def on_otp_clicked(self, OtpCode):
         self.clipboard.set_text(self.OtpCode.get_label(), -1)
