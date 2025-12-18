@@ -21,17 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update github workflows to latest ubuntu and actions<!-- change line -->
 - Minor bump version for ci build<!-- change line -->
 
-## <!-- release tag -->[0.2.5] - 2025-12-16
-### Changed
-- Update python project to latest PEP standards<!-- change line -->
-- Update github workflows to latest ubuntu and actions<!-- change line -->
-- Minor bump version for ci build<!-- change line -->
-
-## <!-- release tag -->[0.2.4] - 2025-12-16
-### Changed
-- Update python project to latest PEP standards<!-- change line -->
-- Update github workflows to latest ubuntu and actions<!-- change line -->
-
 ## <!-- release tag -->[0.2.3] - 2022-07-02
 ### Changed
 - Fix a missing dependency python3-pkg-resources to start otpgui from docker containers<!-- change line -->
