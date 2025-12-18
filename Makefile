@@ -1,4 +1,8 @@
 PKGVER:=$(GIT_TAG)
+fmt:
+	poetry run black .
+	poetry run isort .
+	poetry run flake8
 arch-clean:
 	rm -rf build/arch/artifacts/pkg
 	rm -rf build/arch/artifacts/src
