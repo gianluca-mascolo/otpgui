@@ -8,6 +8,12 @@ from datetime import datetime, timezone
 import requests
 
 
+class TagNotFoundError(Exception):
+    """Raised when a git tag is not found on GitHub."""
+
+    pass
+
+
 def GetTagDate(GitTag, GitMethod):
     DebianFormat = r"%a, %d %b %Y %H:%M:%S %z"
     if GitTag != "0.0.0":
@@ -18,7 +24,14 @@ def GetTagDate(GitTag, GitMethod):
             GithubToken = os.environ["GITHUB_TOKEN"]
             h = {"Accept": "application/vnd.github.v3+json", "Authorization": f"token {GithubToken}"}
             r = requests.get(f"https://api.github.com/repos/gianluca-mascolo/otpgui/git/refs/tags/{GitTag}", headers=h)
-            ObjectUrl = r.json()["object"]["url"]
+            if r.status_code == 404:
+                raise TagNotFoundError(f"Tag '{GitTag}' not found on GitHub. Please ensure the tag exists or remove it from CHANGELOG.md")
+            if r.status_code != 200:
+                raise TagNotFoundError(f"GitHub API error for tag '{GitTag}': HTTP {r.status_code} - {r.text}")
+            response_json = r.json()
+            if "object" not in response_json:
+                raise TagNotFoundError(f"Invalid GitHub API response for tag '{GitTag}': missing 'object' field. Response: {response_json}")
+            ObjectUrl = response_json["object"]["url"]
             r = requests.get(ObjectUrl, headers=h)
             TagInfo = r.json().get("author")
             if TagInfo is None:
