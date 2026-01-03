@@ -32,11 +32,23 @@ fi
 # Finally set the OTPTUI_SCRIPT location according to detected OTPTUI_PATH
 OTPTUI_SCRIPT="${OTPTUI_PATH}otptui.sh"
 
+OTPGUI_SETTINGS="${XDG_CONFIG_HOME:-$HOME/.config}/otpgui/settings.yml"
+if ! [[ -f "$OTPGUI_SETTINGS" ]]; then
+    echo "Error: OTP settings file not found (lookup: ${OTPGUI_SETTINGS:-null})"
+    exit 1
+fi
+
+OTP_CONFIG="$(yq .config_file "$OTPGUI_SETTINGS")"
+if ! [[ -f "$OTP_CONFIG" ]]; then
+    echo "Error: OTP config file not found (lookup: ${OTP_CONFIG:-null})"
+    exit 1
+fi
+
 TMPMENU="$(mktemp)"
 TMPOTP="$(mktemp)"
 (
     echo "--menu otp 50 70 30 \\"
-    yq .otp "$HOME/develop/otp/otp.yml" -o json |
+    yq .otp "$OTP_CONFIG" -o json |
         jq -Mrcs '.[] | to_entries | sort_by(.key) | map([.key, .value.name] | join(";"))[]' |
         awk -F';' 'NR>1{print p" \\"}{p="\t\""$1"\" \""$2"\""}END{print p}'
 ) >"$TMPMENU"

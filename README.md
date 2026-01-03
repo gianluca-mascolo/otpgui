@@ -145,6 +145,10 @@ OTP_CODE=123456
 ```
 Look at the [example script](examples/otp-script-example.sh) to import script output into shell variables.
 
+### Terminal UI Examples
+
+The [examples/OTPTUI.md](examples/OTPTUI.md) documentation describes terminal-based scripts using `dialog` that demonstrate how to build custom interfaces with `otpgui`'s scripted mode. These are useful for headless servers, SSH sessions, or environments without a graphical display.
+
 ## Creating a Release
 
 To create a new release:
