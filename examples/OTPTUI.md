@@ -63,11 +63,7 @@ The script:
 
 ## Configuration
 
-By default, `otpmenu.sh` reads the OTP configuration from `$HOME/develop/otp/otp.yml`. Modify line 39 in the script to point to your own OTP configuration file:
-
-```bash
-yq .otp "/path/to/your/otp.yml" -o json |
-```
+`otpmenu.sh` automatically reads the OTP configuration path from `otpgui`'s settings file (`${XDG_CONFIG_HOME:-$HOME/.config}/otpgui/settings.yml`). No manual configuration is needed if `otpgui` is already set up.
 
 ## Integration with otpgui
 
