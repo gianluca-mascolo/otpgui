@@ -16,6 +16,42 @@ jobs:
         uses: abatilo/actions-poetry@v4
         with:
           poetry-version: '2.2.1'
+      - name: Install dependencies
+        run: poetry install
+      - name: Validate version matches tag
+        run: |
+          GIT_TAG=${GITHUB_REF##refs/tags/}
+          CODE_VERSION=$(python -c 'from otpversion import program_version; print(program_version)')
+          PYPROJECT_VERSION=$(poetry run toml get --toml-path pyproject.toml project.version)
+          POETRY_VERSION=$(poetry run toml get --toml-path pyproject.toml tool.poetry.version)
+
+          echo "Git tag: $GIT_TAG"
+          echo "otpversion.py: $CODE_VERSION"
+          echo "pyproject.toml [project]: $PYPROJECT_VERSION"
+          echo "pyproject.toml [tool.poetry]: $POETRY_VERSION"
+
+          MISMATCH=0
+
+          if [ "$GIT_TAG" != "$CODE_VERSION" ]; then
+            echo "::error::Version mismatch: git tag ($GIT_TAG) != otpversion.py ($CODE_VERSION)"
+            MISMATCH=1
+          fi
+
+          if [ "$GIT_TAG" != "$PYPROJECT_VERSION" ]; then
+            echo "::error::Version mismatch: git tag ($GIT_TAG) != pyproject.toml [project] ($PYPROJECT_VERSION)"
+            MISMATCH=1
+          fi
+
+          if [ "$GIT_TAG" != "$POETRY_VERSION" ]; then
+            echo "::error::Version mismatch: git tag ($GIT_TAG) != pyproject.toml [tool.poetry] ($POETRY_VERSION)"
+            MISMATCH=1
+          fi
+
+          if [ "$MISMATCH" -eq 1 ]; then
+            exit 1
+          fi
+
+          echo "All versions match: $GIT_TAG"
       - name: Build Python Artifact
         run: GIT_TAG=${GITHUB_REF##refs/tags/} make python
       - name: Install dependencies
