@@ -16,6 +16,10 @@ jobs:
         uses: abatilo/actions-poetry@v4
         with:
           poetry-version: '2.2.1'
+      - name: Install system libraries
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install libgirepository1.0-dev libgtk-3-dev libcairo2-dev
       - name: Install dependencies
         run: poetry install
       - name: Validate version matches tag
